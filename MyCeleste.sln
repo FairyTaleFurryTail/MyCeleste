@@ -87,6 +87,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.InputSystem.TestFrame
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.VisualScripting.Shared.Editor", "Unity.VisualScripting.Shared.Editor.csproj", "{A4C1BCCA-D369-D28E-C4F5-814F16EA1AF3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Assembly-CSharp", "Assembly-CSharp.csproj", "{2E7AC14C-A2E5-851F-1651-494C37945523}"
+EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Collections.DocCodeSamples", "Unity.Collections.DocCodeSamples.csproj", "{26262188-DBB8-8697-D9C5-5F6EBE0DDC31}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Unity.Collections.BurstCompatibilityGen", "Unity.Collections.BurstCompatibilityGen.csproj", "{1936DB1F-92AC-7210-1DAC-C3ACDB4A9F45}"
@@ -271,6 +273,10 @@ Global
 		{A4C1BCCA-D369-D28E-C4F5-814F16EA1AF3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A4C1BCCA-D369-D28E-C4F5-814F16EA1AF3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A4C1BCCA-D369-D28E-C4F5-814F16EA1AF3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2E7AC14C-A2E5-851F-1651-494C37945523}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2E7AC14C-A2E5-851F-1651-494C37945523}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2E7AC14C-A2E5-851F-1651-494C37945523}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2E7AC14C-A2E5-851F-1651-494C37945523}.Release|Any CPU.Build.0 = Release|Any CPU
 		{26262188-DBB8-8697-D9C5-5F6EBE0DDC31}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{26262188-DBB8-8697-D9C5-5F6EBE0DDC31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26262188-DBB8-8697-D9C5-5F6EBE0DDC31}.Release|Any CPU.ActiveCfg = Release|Any CPU
