@@ -8,8 +8,7 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace>
-    </RootNamespace>
+    <RootNamespace></RootNamespace>
     <ProjectGuid>{2E7AC14C-A2E5-851F-1651-494C37945523}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -67,6 +66,8 @@
     <Compile Include="Assets\Script\Player.cs" />
     <Compile Include="Assets\Script\StateMechine\BaseState.cs" />
     <Compile Include="Assets\Script\PlayerEntity\PlayerEntity.cs" />
+    <Compile Include="Assets\Script\PlayerEntity\PlayerEntity.Action.cs" />
+    <Compile Include="Assets\Script\StateMechine\ClimbState.cs" />
     <Compile Include="Assets\Script\Tool\Consts.cs" />
     <Compile Include="Assets\Script\LevelManager.cs" />
     <Compile Include="Assets\Settings\InputSystem\PlayerInput.cs" />

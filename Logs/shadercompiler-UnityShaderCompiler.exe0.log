@@ -1,3 +1,6 @@
 Base path: 'D:/Software/Program/Unity/Editor/2022.2.15f1c1/Editor/Data', plugins path 'D:/Software/Program/Unity/Editor/2022.2.15f1c1/Editor/Data/PlaybackEngines'
 Cmd: initializeCompiler
 
+Cmd: shutdown
+
+Quitting shader compiler process

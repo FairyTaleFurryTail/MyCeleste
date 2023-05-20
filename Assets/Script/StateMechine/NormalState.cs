@@ -30,34 +30,52 @@ public class NormalState : BaseState
 
     public override State Update()
     {
-        Vector2 speed = pe.rd.velocity;
+        {
+            if (pe.input.GamePlay.Climb.WasPressedThisFrame())
+                pe.climbButtonTimer = pe.climbButtonTime;
+
+            if (pe.climbButtonTimer > 0 && pe.CheckCollider(pe.handBox))
+            {
+                return State.Climb;
+            }
+        }
 
         //x轴速度计算
         {
-            float mult = pe.onGround ? 1 : PlayConst.AirMult;
+            float mult = pe.onGround ? 1 : Consts.Times.AirMult;
             float max = pe.MaxRun;
             float moveX = pe.input_move.x;
-
             
             float acc = pe.RunAccel;
             //可能会速度过快
             
-            if (Mathf.Abs(speed.x) > max && Mathf.Sign(speed.x) == moveX)
+            if (Mathf.Abs(pe.speed.x) > max && Mathf.Sign(pe.speed.x) == moveX)
                 acc= pe.RunReduce;
-            speed.x = Mathf.MoveTowards(speed.x, max * moveX, acc * mult * Time.deltaTime);
+            pe.speed.x = Mathf.MoveTowards(pe.speed.x, max * moveX, acc * mult * UnityEngine.Time.deltaTime);
         }
+
 
         //y轴速度计算
-        {
 
+        if (pe.varJumpTimer > 0)
+        {
+            //有可能速度比跳跃快，所以是取Max
+            if (pe.input.GamePlay.Jump.IsPressed())
+                pe.speed.y = Mathf.Max(pe.speed.y, pe.varJumpSpeed);
+            else
+                pe.varJumpTimer = 0;
         }
 
-        pe.rd.velocity = speed;
-
-        //跳跃
-        if (pe.input.GamePlay.Jump.ReadValue<bool>())
+        if (pe.input.GamePlay.Jump.WasPressedThisFrame())
         {
-            pe.Jump();
+            if (pe.jumpGraceTimer > 0)
+            {
+                pe.Jump();
+            }
+/*            else if (CanUnDuck)
+            {
+
+            }*/
         }
 
         return State.Normal;
