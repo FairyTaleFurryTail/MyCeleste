@@ -10,7 +10,7 @@ public enum State
     Dash
 }
 
-public class ActionStateMechine
+public partial class ActionStateMechine
 {
     private int _state;
     public List<BaseState> states;
@@ -23,6 +23,7 @@ public class ActionStateMechine
     public void Update()
     {
         state = (int)states[state].Update();
+        CoroutineManager.Instance.Update();
         /*if (coroutine.Active)
         {
             coroutine.Update(deltaTime);

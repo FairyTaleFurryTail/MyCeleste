@@ -18,7 +18,9 @@ public partial class PlayerEntity: MonoBehaviour
     private IntroTypes introType;
     [Header("设置")]
     public BoxCollider2D footBox;
-    public BoxCollider2D bodyBox;
+    [HideInInspector]public BoxCollider2D bodyBox;
+    public BoxCollider2D normalBox;
+    public BoxCollider2D duckBox;
     public BoxCollider2D handBox;
     public int scaleMult;
     #endregion
@@ -56,7 +58,9 @@ public partial class PlayerEntity: MonoBehaviour
         stateMachine = new ActionStateMechine();
         stateMachine.states.Add(new NormalState(this));
         stateMachine.states.Add(new ClimbState(this));
+        stateMachine.states.Add(new DashState(this));
         rd = GetComponent<Rigidbody2D>();
+        Ducking = false;
 
         scale = Vector2.one;
         facing = Face.Right;
@@ -81,7 +85,7 @@ public partial class PlayerEntity: MonoBehaviour
         }
     }
     #endregion
-    
+
     void Update()
     {
         speed = rd.velocity;
@@ -92,8 +96,8 @@ public partial class PlayerEntity: MonoBehaviour
         input_move.y = input_move.y > 0 ? 1 : input_move.y < 0 ? -1 : 0;
 
         //变量计算
-        onGround =CheckCollider(footBox);
-        onWall = CheckCollider(handBox);
+        onGround =GamePhysics.CheckCollider(footBox);
+        onWall = GamePhysics.CheckCollider(handBox);
 
         //各种计时器
         if (varJumpTimer > 0) varJumpTimer -= Time.deltaTime;
@@ -131,7 +135,6 @@ public partial class PlayerEntity: MonoBehaviour
         scale.x *= (int)facing;
     }
 
-
     #region 常量
     [Header("常量")]
     public float MaxRun;
@@ -145,6 +148,10 @@ public partial class PlayerEntity: MonoBehaviour
     public float ClimbDownSpeed = -10f;
     public float ClimbGrapReduce = 100;
     public float climbButtonTime = .1f;
+
+    //冲刺
+    public float DashSpeed = 30f;
+    public float EndDashSpeed = 20f;
     #endregion
 
 }

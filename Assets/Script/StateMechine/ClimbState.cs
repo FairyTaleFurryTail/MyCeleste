@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using static Consts;
 using Times = Consts.Times;
 
 public class ClimbState : BaseState
@@ -21,8 +22,9 @@ public class ClimbState : BaseState
 
     public override void OnEnd()
     {
-        pe.rd.isKinematic = false;
-        pe.jumpGraceTimer = Times.JumpGraceTime;
+        //pe.rd.isKinematic = false;
+        pe.rd.gravityScale = PhySet.Gravity;
+        //pe.jumpGraceTimer = Times.JumpGraceTime;
     }
 
     public override void OnEnter()
@@ -31,7 +33,8 @@ public class ClimbState : BaseState
         pe.speed.y = Times.ClimbGrabYMult;
         pe.climbButtonTimer = 0;
         climbNoMoveTimer = Times.ClimbNoMoveTime;
-        pe.rd.isKinematic = true;
+        pe.rd.gravityScale = 0;
+        //pe.rd.isKinematic = true;
     }
 
     public override State Update()

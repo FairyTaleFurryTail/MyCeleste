@@ -34,24 +34,52 @@ public class NormalState : BaseState
             if (pe.input.GamePlay.Climb.WasPressedThisFrame())
                 pe.climbButtonTimer = pe.climbButtonTime;
 
-            if (pe.climbButtonTimer > 0 && pe.CheckCollider(pe.handBox))
+            if (pe.climbButtonTimer > 0 && GamePhysics.CheckCollider(pe.handBox))
             {
                 return State.Climb;
             }
+
+            if(pe.input.GamePlay.Dash.WasPerformedThisFrame())
+            {
+                return State.Dash;
+            }
+
+            if (pe.Ducking)
+            {
+                if(pe.onGround&&pe.input_move.y >= 0)
+                {
+                    if (pe.CanUnDuck)
+                    {
+                        pe.Ducking= false;
+                        //scale
+                    }
+                }
+            }
+            else if (pe.onGround && pe.input_move.y < 0 && pe.speed.y <= 0)
+            {
+                //scale
+                pe.Ducking = true;
+            }
+
         }
 
         //x轴速度计算
+        if(pe.Ducking&&pe.onGround)
         {
-            float mult = pe.onGround ? 1 : Consts.Times.AirMult;
+            pe.speed.x = Mathf.MoveTowards(pe.speed.x, 0, SpdSet.DuckFriction*Time.deltaTime);
+        }
+        else
+        {
+            float mult = pe.onGround ? 1 : PhySet.AirMult;
             float max = pe.MaxRun;
             float moveX = pe.input_move.x;
             
             float acc = pe.RunAccel;
             //可能会速度过快
-            
             if (Mathf.Abs(pe.speed.x) > max && Mathf.Sign(pe.speed.x) == moveX)
                 acc= pe.RunReduce;
-            pe.speed.x = Mathf.MoveTowards(pe.speed.x, max * moveX, acc * mult * UnityEngine.Time.deltaTime);
+
+            pe.speed.x = Mathf.MoveTowards(pe.speed.x, max * moveX, acc * mult * Time.deltaTime);
         }
 
 

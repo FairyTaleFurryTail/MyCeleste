@@ -60,21 +60,26 @@
   <ItemGroup>
     <Compile Include="Assets\Script\StateMechine\ActionStateMechine.cs" />
     <Compile Include="Assets\Script\PlayerRender.cs" />
+    <Compile Include="Assets\Script\Tool\Singleton.cs" />
     <Compile Include="Assets\Script\PlayerEntity\PlayerEntity.Anim.cs" />
     <Compile Include="Assets\Script\Level.cs" />
-    <Compile Include="Assets\Script\PlayerEntity\PlayerEntity.Collider.cs" />
+    <Compile Include="Assets\Script\StateMechine\CoroutineManager.cs" />
+    <Compile Include="Assets\Script\MyCustom\StateCoroutine.cs" />
     <Compile Include="Assets\Script\Player.cs" />
+    <Compile Include="Assets\Script\Tool\GamePhysics.cs" />
     <Compile Include="Assets\Script\StateMechine\BaseState.cs" />
     <Compile Include="Assets\Script\PlayerEntity\PlayerEntity.cs" />
     <Compile Include="Assets\Script\PlayerEntity\PlayerEntity.Action.cs" />
     <Compile Include="Assets\Script\StateMechine\ClimbState.cs" />
     <Compile Include="Assets\Script\Tool\Consts.cs" />
     <Compile Include="Assets\Script\LevelManager.cs" />
+    <Compile Include="Assets\Script\Tool\SingletonMono.cs" />
     <Compile Include="Assets\Settings\InputSystem\PlayerInput.cs" />
     <Compile Include="Assets\Script\StateMechine\NormalState.cs" />
     <Compile Include="Assets\Script\Tool\Calc.cs" />
     <Compile Include="Assets\Script\SceneParticleManager.cs" />
     <Compile Include="Assets\Script\MyCustom\TitleAttribute.cs" />
+    <Compile Include="Assets\Script\StateMechine\DashState.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
