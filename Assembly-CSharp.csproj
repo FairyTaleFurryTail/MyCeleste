@@ -63,7 +63,6 @@
     <Compile Include="Assets\Script\Tool\Singleton.cs" />
     <Compile Include="Assets\Script\PlayerEntity\PlayerEntity.Anim.cs" />
     <Compile Include="Assets\Script\Level.cs" />
-    <Compile Include="Assets\Script\StateMechine\CoroutineManager.cs" />
     <Compile Include="Assets\Script\MyCustom\StateCoroutine.cs" />
     <Compile Include="Assets\Script\Player.cs" />
     <Compile Include="Assets\Script\Tool\GamePhysics.cs" />
@@ -77,6 +76,7 @@
     <Compile Include="Assets\Settings\InputSystem\PlayerInput.cs" />
     <Compile Include="Assets\Script\StateMechine\NormalState.cs" />
     <Compile Include="Assets\Script\Tool\Calc.cs" />
+    <Compile Include="Assets\Script\MyCustom\CoroutineManager.cs" />
     <Compile Include="Assets\Script\SceneParticleManager.cs" />
     <Compile Include="Assets\Script\MyCustom\TitleAttribute.cs" />
     <Compile Include="Assets\Script\StateMechine\DashState.cs" />

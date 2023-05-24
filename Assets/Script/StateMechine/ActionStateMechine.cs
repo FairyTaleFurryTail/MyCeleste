@@ -14,20 +14,18 @@ public partial class ActionStateMechine
 {
     private int _state;
     public List<BaseState> states;
+    private CoroutineManager coroutineManager;
     //private Coroutine coroutine;
     public ActionStateMechine()
     {
         states=new List<BaseState>();
+        coroutineManager = new CoroutineManager();
 
     }
     public void Update()
     {
         state = (int)states[state].Update();
-        CoroutineManager.Instance.Update();
-        /*if (coroutine.Active)
-        {
-            coroutine.Update(deltaTime);
-        }*/
+        coroutineManager.Update();
     }
     
 
@@ -44,6 +42,8 @@ public partial class ActionStateMechine
             states[_state].OnEnd();
             _state = value;
             states[_state].OnEnter();
+            if (states[_state].haveCoroutine)
+                coroutineManager.StartCoroutine(states[_state].Coroutine());
         }
     }
 

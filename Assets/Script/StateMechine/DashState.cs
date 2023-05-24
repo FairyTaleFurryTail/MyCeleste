@@ -27,13 +27,14 @@ public class DashState : BaseState
         dir = pe.input_move;
         if (dir == Vector2.zero)
             dir = new Vector2((float)pe.facing, 0);
-        CoroutineManager.Instance.StartCoroutine(Coroutine());
     }
 
     public override State Update()
     {
         if (pe.input.GamePlay.Jump.WasPressedThisFrame())
-            return State.Normal;
+        {
+
+        }
         return returnState;
     }
     public override IEnumerator Coroutine()

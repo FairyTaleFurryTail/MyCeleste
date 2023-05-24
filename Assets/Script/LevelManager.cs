@@ -14,7 +14,11 @@ public class LevelManager : MonoBehaviour
 
     private void Start()
     {
-        player.Instantiation(level.responPoint.position);
+        //player.Instantiation(level.responPoint.position);
+    }
+    private void Update()
+    {
+        //CoroutineManager.Instance.Update();
     }
 
 }

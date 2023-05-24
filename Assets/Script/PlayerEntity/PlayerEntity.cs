@@ -105,7 +105,6 @@ public partial class PlayerEntity: MonoBehaviour
         if (onGround)
         {
             jumpGraceTimer = Times.JumpGraceTime;
-            speed.y = 0;
         }
         else if (jumpGraceTimer > 0)
             jumpGraceTimer -= Time.deltaTime;
@@ -127,8 +126,7 @@ public partial class PlayerEntity: MonoBehaviour
         stateMachine.Update();
 
         AnimUpdate();
-
-
+            
         rd.velocity = speed;
         scale.x *= (int)facing;
         transform.localScale = scale*scaleMult;

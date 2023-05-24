@@ -4,7 +4,8 @@ using UnityEngine;
 
 
 
-public class CoroutineManager:Singleton<CoroutineManager>
+///这里手工实现协程的目的是为了执行顺序的保证，而且它只会在状态机使用
+public class CoroutineManager
 {
     public LinkedList<StateCoroutine> coroutines=new LinkedList<StateCoroutine>();
     public LinkedList<StateCoroutine> closeingCors = new LinkedList<StateCoroutine>();
@@ -19,7 +20,7 @@ public class CoroutineManager:Singleton<CoroutineManager>
         closeingCors.AddLast(coroutine);
     }
 
-    public void Update() 
+    public void Update()
     {
         var node = coroutines.First;
         while (node != null)
