@@ -17,18 +17,60 @@ public partial class PlayerEntity: MonoBehaviour
         varJumpSpeed = speed.y;
     }
 
-    public void WallJump(int dir)
+    public void SuperJump()
     {
         varJumpTimer = Times.VarJumpTime;
         jumpGraceTimer = 0;
-        speed.x += WallJumpXBoost * input_move.x;
+        speed.x = SuperJumpX * (int)facing;
         speed.y = JumpSpeed;
+
+        if (Ducking)
+        {
+            Ducking = false;
+            speed.x *= DuckSuperJumpXMult;
+            speed.y *= DuckSuperJumpYMult;
+            //特效1
+        }
+        else
+        {
+            ;
+            //特效2
+        }
+
         varJumpSpeed = speed.y;
-        forceMoveX = dir;
-        forceMoveXTimer = Times.WallJumpForceTime;
-        
     }
 
+    public void WallJump(int dir)
+    {
+        Ducking = false;
+        varJumpTimer = Times.VarJumpTime;
+        jumpGraceTimer = 0;
+        speed.x = WallJumpXBoost * dir;
+        speed.y = JumpSpeed;
+        if (input_move.x != 0)
+        {
+            forceMoveX = dir;
+            forceMoveXTimer = Times.WallJumpForceTime;
+        }
+        
+        varJumpSpeed = speed.y;
+        
+        
+    }
+    public void SuperWallJump(int dir)
+    {
+        Ducking = false;
+        varJumpTimer = Times.SuperWallJumpVarTime;
+        jumpGraceTimer = 0;
+        speed.x = SuperWallJumpX * dir;
+        speed.y = SuperWallJumpSpeed;
+        if (input_move.x != 0)
+        {
+            forceMoveX = dir;
+            forceMoveXTimer = Times.WallJumpForceTime;
+        }
+        varJumpSpeed = speed.y;
+    }
 
 
     #endregion

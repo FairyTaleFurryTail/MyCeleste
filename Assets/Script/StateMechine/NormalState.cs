@@ -100,10 +100,32 @@ public class NormalState : BaseState
             {
                 pe.Jump();
             }
-/*            else if (CanUnDuck)
+            else if (true)
             {
-
-            }*/
+                if (GamePhysics.CheckCollider(pe.frontWallCheckBox))
+                {
+                    if(pe.dashAttackTimer>0&&pe.dashDir.y > 0&&pe.dashDir.x==0)
+                    {
+                        pe.SuperWallJump((int)pe.facing * -1);
+                    }
+                    else
+                    {
+                        pe.WallJump((int)pe.facing * -1);
+                    }
+                }
+                else if (GamePhysics.CheckCollider(pe.backWallCheckBox))
+                {
+                    if (pe.dashAttackTimer > 0 && pe.dashDir.y > 0 && pe.dashDir.x == 0)
+                    {
+                        pe.SuperWallJump((int)pe.facing);
+                    }
+                    else
+                    {
+                        pe.WallJump((int)pe.facing);
+                    }
+                        
+                }
+            }
         }
 
         return State.Normal;

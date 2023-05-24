@@ -13,7 +13,7 @@ public partial class PlayerEntity: MonoBehaviour
 {
     #region 配置
     public PlayerInput input;
-    public Rigidbody2D rd;
+    [HideInInspector]public Rigidbody2D rd;
     private ActionStateMechine stateMachine;
     private IntroTypes introType;
     [Header("设置")]
@@ -22,16 +22,20 @@ public partial class PlayerEntity: MonoBehaviour
     public BoxCollider2D normalBox;
     public BoxCollider2D duckBox;
     public BoxCollider2D handBox;
+    public BoxCollider2D frontWallCheckBox;
+    public BoxCollider2D backWallCheckBox;
     public int scaleMult;
     #endregion
 
     #region vars
     /// <summary>速度，会在Update最后赋值</summary>
     public Vector2 speed;
+    public Vector2 dashDir;
     /// <summary>保留速度用于计算长按</summary>
-    public float varJumpSpeed;
-    public int forceMoveX;
-    public Face facing;
+    [HideInInspector] public float varJumpSpeed;
+    /// <summary>跳跃一定时间内不能转向</summary>
+    [HideInInspector] public int forceMoveX;
+    [HideInInspector] public Face facing;
     public Vector3 scale;
 
     //状态计算所需
@@ -40,10 +44,19 @@ public partial class PlayerEntity: MonoBehaviour
     #endregion
 
     #region 计时器
-    public float varJumpTimer;
-    public float jumpGraceTimer;
-    public float forceMoveXTimer;
-    public float climbButtonTimer;
+    [HideInInspector] public float varJumpTimer;
+    /// <summary>土狼时间</summary>
+    [HideInInspector] public float jumpGraceTimer;
+    [HideInInspector] public float forceMoveXTimer;
+    [HideInInspector] public float climbButtonTimer;
+    [HideInInspector] public float dashAttackTimer;
+    public bool DashAttacking
+    {
+        get
+        {
+            return dashAttackTimer > 0;
+        }
+    }
     #endregion
 
     #region 控制信号
@@ -101,6 +114,7 @@ public partial class PlayerEntity: MonoBehaviour
 
         //各种计时器
         if (varJumpTimer > 0) varJumpTimer -= Time.deltaTime;
+        if(dashAttackTimer>0) dashAttackTimer-=Time.deltaTime;
 
         if (onGround)
         {
@@ -141,11 +155,16 @@ public partial class PlayerEntity: MonoBehaviour
     //跳跃
     public float JumpSpeed = 13.125f;
     public float JumpXBoost = 5f;
+    public float SuperWallJumpX { get { return MaxRun + JumpXBoost * 2; } }
+    public float SuperWallJumpSpeed = 20f;
+    public float SuperJumpX = 260 / 10f;
     public float WallJumpXBoost = 16.125f; //MaxRun+JumpHBoost
     public float ClimbUpSpeed = 45/8f;
     public float ClimbDownSpeed = -10f;
     public float ClimbGrapReduce = 100;
     public float climbButtonTime = .1f;
+    public const float DuckSuperJumpXMult = 1.25f;
+    public const float DuckSuperJumpYMult = 1.25f;
 
     //冲刺
     public float DashSpeed = 30f;

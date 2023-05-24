@@ -4,6 +4,7 @@ using UnityEngine;
 
 public static class GamePhysics
 {
+
     public static bool CheckCollider(BoxCollider2D col, string mask = "Solid") //单层检测使用
     {
         ContactFilter2D contactFilter = new ContactFilter2D();

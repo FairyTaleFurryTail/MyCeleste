@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections;
+using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Remoting.Messaging;
 using UnityEditor;
 using UnityEngine;
@@ -20,38 +21,64 @@ public class DashState : BaseState
     }
 
     private State returnState;
-    private Vector2 dir;
     public override void OnEnter()
     {
         returnState = state;
-        dir = pe.input_move;
-        if (dir == Vector2.zero)
-            dir = new Vector2((float)pe.facing, 0);
+        pe.dashDir = pe.input_move;
+        if (pe.dashDir == Vector2.zero)
+            pe.dashDir = new Vector2((float)pe.facing, 0);
+        pe.dashAttackTimer = Times.DashAttackTime;
     }
 
     public override State Update()
     {
-        if (pe.input.GamePlay.Jump.WasPressedThisFrame())
+
+        if (pe.dashDir.y == 0)
+        {
+            if (pe.input.GamePlay.Jump.WasPressedThisFrame()&& pe.jumpGraceTimer > 0)
+            {
+                pe.SuperJump();
+                return State.Normal;
+            }
+        }
+        else  if(pe.dashDir.y==1&& pe.dashDir.x==0)
+        {
+            if(pe.input.GamePlay.Jump.WasPressedThisFrame())
+            {
+                if(GamePhysics.CheckCollider(pe.backWallCheckBox))
+                {
+                    pe.SuperWallJump((int)pe.facing);
+                    return State.Normal;
+                }
+                else if (GamePhysics.CheckCollider(pe.frontWallCheckBox))
+                {
+                    pe.SuperWallJump((int)pe.facing * -1);
+                    return State.Normal;
+                }
+            }
+        }
+        else
         {
 
         }
+
         return returnState;
     }
     public override IEnumerator Coroutine()
     {
-        Vector2 dashDir = dir.normalized;
-        Vector2 newSpeed = dashDir * pe.DashSpeed;
+        Vector2 spdDir = pe.dashDir.normalized;
+        Vector2 newSpeed = spdDir * pe.DashSpeed;
 
-        if(dashDir.x==Mathf.Sign(pe.speed.x)&& Mathf.Abs(newSpeed.x)< Mathf.Abs(pe.speed.x))
+        if(spdDir.x==Mathf.Sign(pe.speed.x)&& Mathf.Abs(newSpeed.x)< Mathf.Abs(pe.speed.x))
             newSpeed.x=pe.speed.x;
         pe.speed=newSpeed;
 
         pe.rd.gravityScale = 0;
         yield return new WaitTime(Times.DashTime);
 
-        if(dashDir.y>=0)
+        if(spdDir.y>=0)
         {
-            pe.speed = dashDir * pe.EndDashSpeed;
+            pe.speed = spdDir * pe.EndDashSpeed;
         }
         if(pe.speed.y>0)
         {

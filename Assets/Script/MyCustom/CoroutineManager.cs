@@ -9,12 +9,13 @@ public class CoroutineManager
 {
     public LinkedList<StateCoroutine> coroutines=new LinkedList<StateCoroutine>();
     public LinkedList<StateCoroutine> closeingCors = new LinkedList<StateCoroutine>();
-
-    public void StartCoroutine(IEnumerator enumerator)
+    
+    public StateCoroutine StartCoroutine(IEnumerator enumerator)
     {
-        coroutines.AddLast(new StateCoroutine(enumerator));
+        StateCoroutine coroutine = new StateCoroutine(enumerator);
+        coroutines.AddLast(coroutine);
+        return coroutine;
     }
-
     public void CloseCoroutine(StateCoroutine coroutine)
     {
         closeingCors.AddLast(coroutine);

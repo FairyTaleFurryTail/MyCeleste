@@ -15,12 +15,10 @@ public partial class ActionStateMechine
     private int _state;
     public List<BaseState> states;
     private CoroutineManager coroutineManager;
-    //private Coroutine coroutine;
     public ActionStateMechine()
     {
         states=new List<BaseState>();
         coroutineManager = new CoroutineManager();
-
     }
     public void Update()
     {
@@ -40,10 +38,12 @@ public partial class ActionStateMechine
             if (_state == value)
                 return;
             states[_state].OnEnd();
+            if (states[_state].haveCoroutine)
+                coroutineManager.CloseCoroutine(states[_state].coroutine);
             _state = value;
             states[_state].OnEnter();
             if (states[_state].haveCoroutine)
-                coroutineManager.StartCoroutine(states[_state].Coroutine());
+                states[_state].coroutine = coroutineManager.StartCoroutine(states[_state].Coroutine()) ;
         }
     }
 
