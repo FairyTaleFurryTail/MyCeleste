@@ -1,7 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
 using static Consts;
-
 public class NormalState : BaseState
 {
     public override State state => (int)State.Normal;
@@ -34,7 +33,7 @@ public class NormalState : BaseState
             if (pe.input.GamePlay.Climb.WasPressedThisFrame())
                 pe.climbButtonTimer = pe.climbButtonTime;
 
-            if (pe.climbButtonTimer > 0 && GamePhysics.CheckCollider(pe.handBox))
+            if (pe.climbButtonTimer > 0 && pe.CheckCollider(pe.bodyBox,Vector2.right*(int)pe.facing))
             {
                 return State.Climb;
             }
@@ -84,6 +83,52 @@ public class NormalState : BaseState
 
 
         //y轴速度计算
+        float mf = SpdSet.MaxFall;
+        float fmf = SpdSet.FastMaxFall;
+
+        if (pe.input_move.y<0&& pe.speed.y <= mf)
+        {
+            pe.maxFall = Mathf.MoveTowards(pe.maxFall, fmf, SpdSet.FastMaxAccel * Time.deltaTime);
+
+            //Scale变化：加速到fmf的一半的时候scale开始发生变化
+            float half = (mf + fmf) / 2;
+            if(pe.speed.y<=half)
+            {
+                float spriteLerp = Mathf.Min(1, (pe.speed.y - half) / (fmf - half));
+                pe.scale.x = Mathf.Lerp(1f, 0.5f, spriteLerp);
+                pe.scale.y = Mathf.Lerp(1f, 1.5f, spriteLerp);
+            }
+        }
+        else
+            pe.maxFall = Mathf.MoveTowards(pe.maxFall, mf, SpdSet.FastMaxAccel * Time.deltaTime);
+
+        //重力 下落
+        if (!pe.onGround)
+        {
+            float falls = pe.maxFall;
+
+            //计算滑墙
+            if(pe.input_move.x*(int)pe.facing>1)
+            {
+                if(pe.speed.y<=0&&pe.wallSlideTimer>0 && pe.CheckCollider(pe.bodyBox,Vector2.right*(int)pe.facing))
+                {
+                    pe.Ducking = false;
+                    pe.wallSlideDir = (int)pe.facing;
+                }
+                if(pe.wallSlideDir!=0)
+                {
+                    falls = Mathf.Lerp(SpdSet.MaxFall, SpdSet.WallSlideStartMax, pe.wallSlideTimer / Times.WallSlideTime);
+                    if (pe.wallSlideTimer / Times.WallSlideTime > .65f)
+                    {
+                        //特效
+                    }
+                }
+            }
+
+            pe.speed.y = Mathf.MoveTowards(pe.speed.y, falls, pe.Gravity * Time.deltaTime);
+        }
+
+
 
         if (pe.varJumpTimer > 0)
         {
@@ -102,9 +147,9 @@ public class NormalState : BaseState
             }
             else if (true)
             {
-                if (GamePhysics.CheckCollider(pe.frontWallCheckBox))
+                if (pe.WallJumpCheck((int)pe.facing))
                 {
-                    if(pe.dashAttackTimer>0&&pe.dashDir.y > 0&&pe.dashDir.x==0)
+                    if (pe.dashAttackTimer > 0 && pe.dashDir.y > 0 && pe.dashDir.x == 0)
                     {
                         pe.SuperWallJump((int)pe.facing * -1);
                     }
@@ -113,7 +158,7 @@ public class NormalState : BaseState
                         pe.WallJump((int)pe.facing * -1);
                     }
                 }
-                else if (GamePhysics.CheckCollider(pe.backWallCheckBox))
+                else if (pe.WallJumpCheck((int)pe.facing * -1))
                 {
                     if (pe.dashAttackTimer > 0 && pe.dashDir.y > 0 && pe.dashDir.x == 0)
                     {
@@ -123,7 +168,7 @@ public class NormalState : BaseState
                     {
                         pe.WallJump((int)pe.facing);
                     }
-                        
+
                 }
             }
         }

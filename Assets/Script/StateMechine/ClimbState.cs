@@ -1,8 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
 using static Consts;
-using Times = Consts.Times;
-
 public class ClimbState : BaseState
 {
     private float climbNoMoveTimer;
@@ -22,9 +20,7 @@ public class ClimbState : BaseState
 
     public override void OnEnd()
     {
-        //pe.rd.isKinematic = false;
-        pe.rd.gravityScale = PhySet.Gravity;
-        //pe.jumpGraceTimer = Times.JumpGraceTime;
+        
     }
 
     public override void OnEnter()
@@ -58,6 +54,12 @@ public class ClimbState : BaseState
 
         if (!pe.input.GamePlay.Climb.IsPressed())
             return State.Normal;
+
+        if(!pe.CheckCollider(pe.bodyBox,(int)pe.facing*Vector2.right))
+        {
+            pe.ClimbHop();
+            return State.Normal;
+        }
 
         pe.speed.y = Mathf.MoveTowards(pe.speed.y,0, pe.ClimbGrapReduce * UnityEngine.Time.deltaTime);
 

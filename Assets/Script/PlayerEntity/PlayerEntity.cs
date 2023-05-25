@@ -17,13 +17,14 @@ public partial class PlayerEntity: MonoBehaviour
     private ActionStateMechine stateMachine;
     private IntroTypes introType;
     [Header("设置")]
-    public BoxCollider2D footBox;
+    [Title("动画控制"), SerializeField] private Animator sprite;
+    //public BoxCollider2D footBox;
     [HideInInspector]public BoxCollider2D bodyBox;
     public BoxCollider2D normalBox;
     public BoxCollider2D duckBox;
-    public BoxCollider2D handBox;
-    public BoxCollider2D frontWallCheckBox;
-    public BoxCollider2D backWallCheckBox;
+    //public BoxCollider2D handBox;
+    //public BoxCollider2D frontWallCheckBox;
+    //public BoxCollider2D backWallCheckBox;
     public int scaleMult;
     #endregion
 
@@ -31,15 +32,17 @@ public partial class PlayerEntity: MonoBehaviour
     /// <summary>速度，会在Update最后赋值</summary>
     public Vector2 speed;
     public Vector2 dashDir;
+    public float maxFall;
     /// <summary>保留速度用于计算长按</summary>
     [HideInInspector] public float varJumpSpeed;
     /// <summary>跳跃一定时间内不能转向</summary>
     [HideInInspector] public int forceMoveX;
     [HideInInspector] public Face facing;
+    [HideInInspector] public int wallSlideDir;
     public Vector3 scale;
 
     //状态计算所需
-    public bool onGround;
+    private bool _onGround;
     public bool onWall;
     #endregion
 
@@ -50,6 +53,7 @@ public partial class PlayerEntity: MonoBehaviour
     [HideInInspector] public float forceMoveXTimer;
     [HideInInspector] public float climbButtonTimer;
     [HideInInspector] public float dashAttackTimer;
+    [HideInInspector] public float wallSlideTimer;
     public bool DashAttacking
     {
         get
@@ -64,6 +68,8 @@ public partial class PlayerEntity: MonoBehaviour
     public Vector2 input_move;
     #endregion
 
+    private Queue<Collider2D>colliderQueue=new Queue<Collider2D>();
+
     #region 初始化函数
     private void Awake()
     {
@@ -75,8 +81,9 @@ public partial class PlayerEntity: MonoBehaviour
         rd = GetComponent<Rigidbody2D>();
         Ducking = false;
 
-        scale = Vector2.one;
+        scale = Vector3.one;
         facing = Face.Right;
+        maxFall = SpdSet.MaxFall;
     }
     private void OnEnable()
     {
@@ -109,8 +116,7 @@ public partial class PlayerEntity: MonoBehaviour
         input_move.y = input_move.y > 0 ? 1 : input_move.y < 0 ? -1 : 0;
 
         //变量计算
-        onGround =GamePhysics.CheckCollider(footBox);
-        onWall = GamePhysics.CheckCollider(handBox);
+        onGround = CheckGround(Vector2.zero);
 
         //各种计时器
         if (varJumpTimer > 0) varJumpTimer -= Time.deltaTime;
@@ -123,7 +129,7 @@ public partial class PlayerEntity: MonoBehaviour
         else if (jumpGraceTimer > 0)
             jumpGraceTimer -= Time.deltaTime;
 
-        //跳跃后一定时间不能转向
+        //由游戏控制input.x
         if (forceMoveXTimer > 0)
         {
             forceMoveXTimer -= Time.deltaTime;
@@ -136,15 +142,36 @@ public partial class PlayerEntity: MonoBehaviour
             facing = (Face)input_move.x;
         }
 
+        UpdateSprite();
+
         //状态机
         stateMachine.Update();
 
+        
         AnimUpdate();
             
         rd.velocity = speed;
         scale.x *= (int)facing;
-        transform.localScale = scale*scaleMult;
+        sprite.transform.localScale = scale*scaleMult;
         scale.x *= (int)facing;
+    }
+
+    private void OnCollisionEnter2D(Collision2D collider)
+    {
+        ContactPoint2D[] contactPoint = new ContactPoint2D[1];//存储碰撞方向的单位向量
+        collider.GetContacts(contactPoint);//获取碰撞点
+        //normal是指我相对碰撞点的位置
+        Vector2 normal = contactPoint[0].normal;
+        if(normal.y>0)
+        {
+            if (speed.y < 0)
+            {
+                float squish = Mathf.Min(speed.y / SpdSet.FastMaxFall, 1);
+                scale.x = Mathf.Lerp(1, 1.6f, squish);
+                scale.y = Mathf.Lerp(1, .4f, squish);
+            }
+        }
+        //colliderQueue.
     }
 
     #region 常量
@@ -152,8 +179,9 @@ public partial class PlayerEntity: MonoBehaviour
     public float MaxRun;
     public float RunReduce;
     public float RunAccel;
+    public float Gravity = 90f;
     //跳跃
-    public float JumpSpeed = 13.125f;
+    public float JumpSpeed;
     public float JumpXBoost = 5f;
     public float SuperWallJumpX { get { return MaxRun + JumpXBoost * 2; } }
     public float SuperWallJumpSpeed = 20f;

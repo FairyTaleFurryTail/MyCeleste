@@ -64,8 +64,9 @@
     <Compile Include="Assets\Script\PlayerEntity\PlayerEntity.Anim.cs" />
     <Compile Include="Assets\Script\Level.cs" />
     <Compile Include="Assets\Script\MyCustom\StateCoroutine.cs" />
+    <Compile Include="Assets\Script\PlayerEntity\PlayEntity.Property.cs" />
+    <Compile Include="Assets\Script\PlayerEntity\PlayerEntity.Collider.cs" />
     <Compile Include="Assets\Script\Player.cs" />
-    <Compile Include="Assets\Script\Tool\GamePhysics.cs" />
     <Compile Include="Assets\Script\StateMechine\BaseState.cs" />
     <Compile Include="Assets\Script\PlayerEntity\PlayerEntity.cs" />
     <Compile Include="Assets\Script\PlayerEntity\PlayerEntity.Action.cs" />

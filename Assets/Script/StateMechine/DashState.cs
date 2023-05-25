@@ -17,7 +17,7 @@ public class DashState : BaseState
     
     public override void OnEnd()
     {
-        pe.rd.gravityScale = PhySet.Gravity;
+        //pe.rd.gravityScale = PhySet.Gravity;
     }
 
     private State returnState;
@@ -33,6 +33,14 @@ public class DashState : BaseState
     public override State Update()
     {
 
+        if (pe.input.GamePlay.Climb.WasPressedThisFrame())
+            pe.climbButtonTimer = pe.climbButtonTime;
+
+        if (pe.climbButtonTimer > 0 && pe.CheckCollider(pe.bodyBox, Vector2.right * (int)pe.facing))
+        {
+            return State.Climb;
+        }
+
         if (pe.dashDir.y == 0)
         {
             if (pe.input.GamePlay.Jump.WasPressedThisFrame()&& pe.jumpGraceTimer > 0)
@@ -41,16 +49,16 @@ public class DashState : BaseState
                 return State.Normal;
             }
         }
-        else  if(pe.dashDir.y==1&& pe.dashDir.x==0)
+        else if(pe.dashDir.y==1&& pe.dashDir.x==0)
         {
             if(pe.input.GamePlay.Jump.WasPressedThisFrame())
             {
-                if(GamePhysics.CheckCollider(pe.backWallCheckBox))
+                if(pe.WallJumpCheck((int)pe.facing*-1))
                 {
                     pe.SuperWallJump((int)pe.facing);
                     return State.Normal;
                 }
-                else if (GamePhysics.CheckCollider(pe.frontWallCheckBox))
+                else if (pe.WallJumpCheck((int)pe.facing))
                 {
                     pe.SuperWallJump((int)pe.facing * -1);
                     return State.Normal;
@@ -59,7 +67,7 @@ public class DashState : BaseState
         }
         else
         {
-
+            
         }
 
         return returnState;

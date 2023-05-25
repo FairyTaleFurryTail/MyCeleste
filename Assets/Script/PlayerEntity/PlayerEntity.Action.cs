@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UIElements.Experimental;
 using static Consts;
-using Times = Consts.Times;
 
 public partial class PlayerEntity: MonoBehaviour
 {
@@ -105,11 +105,21 @@ public partial class PlayerEntity: MonoBehaviour
                 return false;
             bool was = normalBox.gameObject.activeSelf;
             normalBox.gameObject.SetActive(true);
-            bool res = !GamePhysics.CheckCollider(normalBox);
+            bool res = !CheckCollider(normalBox,Vector2.up);
             normalBox.gameObject.SetActive(was);
             return res;
         }
     }
 
+    #endregion
+
+    #region Climb
+    public void ClimbHop()
+    {
+        speed.x = (int)facing *  SpdSet.ClimbHopX;
+        speed.y = Mathf.Min(speed.y, SpdSet.ClimbHopY);
+        forceMoveXTimer = Times.ClimbHopForceTime;
+        forceMoveX = 0;
+    }
     #endregion
 }
