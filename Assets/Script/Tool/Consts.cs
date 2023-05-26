@@ -8,6 +8,11 @@ public static class Consts{
         public static readonly string prefabPath = "Prefab/";
     }
 
+    public static class PlaySet
+    {
+        public const float ClimbMaxStamina=110;
+    }
+
     public static class ColSet
     {
         public const float WallJumpCheckDist = .6f;

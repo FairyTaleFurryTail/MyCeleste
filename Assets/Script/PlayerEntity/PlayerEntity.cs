@@ -43,7 +43,7 @@ public partial class PlayerEntity: MonoBehaviour
 
     //状态计算所需
     private bool _onGround;
-    public bool onWall;
+    public float Stamina;
     #endregion
 
     #region 计时器
@@ -53,7 +53,7 @@ public partial class PlayerEntity: MonoBehaviour
     [HideInInspector] public float forceMoveXTimer;
     [HideInInspector] public float climbButtonTimer;
     [HideInInspector] public float dashAttackTimer;
-    [HideInInspector] public float wallSlideTimer;
+    public float wallSlideTimer;
     public bool DashAttacking
     {
         get
@@ -79,15 +79,16 @@ public partial class PlayerEntity: MonoBehaviour
         stateMachine.states.Add(new ClimbState(this));
         stateMachine.states.Add(new DashState(this));
         rd = GetComponent<Rigidbody2D>();
-        Ducking = false;
 
         scale = Vector3.one;
         facing = Face.Right;
-        maxFall = SpdSet.MaxFall;
     }
     private void OnEnable()
     {
         input.Enable();
+        maxFall = SpdSet.MaxFall;
+        Ducking = false;
+        Stamina = PlaySet.ClimbMaxStamina;
     }
     private void OnDisable()
     {
@@ -118,7 +119,7 @@ public partial class PlayerEntity: MonoBehaviour
         //变量计算
         onGround = CheckGround(Vector2.zero);
 
-        //各种计时器
+#region 各种计时器
         if (varJumpTimer > 0) varJumpTimer -= Time.deltaTime;
         if(dashAttackTimer>0) dashAttackTimer-=Time.deltaTime;
 
@@ -136,12 +137,27 @@ public partial class PlayerEntity: MonoBehaviour
             input_move.x = forceMoveX;
         }
 
-        // 动作计算
-        if(input_move.x!=0&&stateMachine.state!=(int)State.Climb)
+        //wallSlideTimer
+        if (wallSlideDir != 0)
+        {
+            wallSlideTimer = Math.Max(wallSlideTimer - Time.deltaTime, 0);
+            wallSlideDir = 0;
+        }
+        #endregion
+
+        #region  var 
+        // 朝向
+        if (input_move.x!=0&&stateMachine.state!=(int)State.Climb)
         {
             facing = (Face)input_move.x;
         }
-
+        //滑墙时间
+        if(onGround&&stateMachine.state!=(int)State.Climb)
+        {
+            Stamina = PlaySet.ClimbMaxStamina;
+            wallSlideTimer = Times.WallSlideTime;
+        }
+        #endregion
         UpdateSprite();
 
         //状态机

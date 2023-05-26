@@ -108,7 +108,7 @@ public class NormalState : BaseState
             float falls = pe.maxFall;
 
             //计算滑墙
-            if(pe.input_move.x*(int)pe.facing>1)
+            if(pe.input_move.x*(int)pe.facing>0)
             {
                 if(pe.speed.y<=0&&pe.wallSlideTimer>0 && pe.CheckCollider(pe.bodyBox,Vector2.right*(int)pe.facing))
                 {

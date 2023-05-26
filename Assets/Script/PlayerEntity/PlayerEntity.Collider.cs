@@ -11,8 +11,9 @@ public partial class PlayerEntity: MonoBehaviour
         ContactFilter2D contactFilter = new ContactFilter2D();
         contactFilter.SetLayerMask(LayerMask.GetMask(mask));
 
+        Collider2D[] temp=new Collider2D[1];
         col.offset += dir * (dist + ColSet.OffsetDistance);
-        bool res = col.OverlapCollider(contactFilter, new Collider2D[1]) > 0;
+        bool res = col.OverlapCollider(contactFilter, temp) > 0;
         col.offset -= dir * (dist + ColSet.OffsetDistance);
         return res;
     }
@@ -27,6 +28,7 @@ public partial class PlayerEntity: MonoBehaviour
         ContactFilter2D contactFilter = new ContactFilter2D();
         contactFilter.SetLayerMask(LayerMask.GetMask(mask));
         RaycastHit2D[] hit = new RaycastHit2D[1];
+        //使用的是向下cast碰撞体实现（也可以通过碰撞点的方向判断）
         bodyBox.Cast(Vector2.down,contactFilter, hit,ColSet.OffsetDistance);
         return hit.Length > 0 && hit[0].normal == Vector2.up;
     }

@@ -11,6 +11,7 @@ public partial class PlayerEntity: MonoBehaviour
     public void Jump()
     {
         varJumpTimer = Times.VarJumpTime;
+        wallSlideTimer = Times.WallSlideTime;
         jumpGraceTimer = 0;
         speed.x += JumpXBoost * input_move.x;
         speed.y = JumpSpeed;
@@ -20,6 +21,7 @@ public partial class PlayerEntity: MonoBehaviour
     public void SuperJump()
     {
         varJumpTimer = Times.VarJumpTime;
+        wallSlideTimer = Times.WallSlideTime;
         jumpGraceTimer = 0;
         speed.x = SuperJumpX * (int)facing;
         speed.y = JumpSpeed;
@@ -44,6 +46,7 @@ public partial class PlayerEntity: MonoBehaviour
     {
         Ducking = false;
         varJumpTimer = Times.VarJumpTime;
+        wallSlideTimer = Times.WallSlideTime;
         jumpGraceTimer = 0;
         speed.x = WallJumpXBoost * dir;
         speed.y = JumpSpeed;
@@ -61,6 +64,7 @@ public partial class PlayerEntity: MonoBehaviour
     {
         Ducking = false;
         varJumpTimer = Times.SuperWallJumpVarTime;
+        wallSlideTimer = Times.WallSlideTime;
         jumpGraceTimer = 0;
         speed.x = SuperWallJumpX * dir;
         speed.y = SuperWallJumpSpeed;
