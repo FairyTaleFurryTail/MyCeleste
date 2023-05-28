@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using static Consts;
+using static PlayerEntity;
 
 public enum IntroTypes { Transition, Respawn, WalkInRight, WalkInLeft, Jump, WakeUp, Fall, TempleMirrorVoid, None }
 public enum Face {Left=-1,Right=1}
@@ -17,14 +17,12 @@ public partial class PlayerEntity: MonoBehaviour
     private ActionStateMechine stateMachine;
     private IntroTypes introType;
     [Header("设置")]
-    [Title("动画控制"), SerializeField] private Animator sprite;
-    //public BoxCollider2D footBox;
+    [Title("动画控制"), SerializeField] private Animator anim;
+    [SerializeField] private Color flashColor;
+    private SpriteRenderer sprite;
     [HideInInspector]public BoxCollider2D bodyBox;
     public BoxCollider2D normalBox;
     public BoxCollider2D duckBox;
-    //public BoxCollider2D handBox;
-    //public BoxCollider2D frontWallCheckBox;
-    //public BoxCollider2D backWallCheckBox;
     public int scaleMult;
     #endregion
 
@@ -40,6 +38,7 @@ public partial class PlayerEntity: MonoBehaviour
     [HideInInspector] public Face facing;
     [HideInInspector] public int wallSlideDir;
     public Vector3 scale;
+    
 
     //状态计算所需
     private bool _onGround;
@@ -51,7 +50,7 @@ public partial class PlayerEntity: MonoBehaviour
     /// <summary>土狼时间</summary>
     [HideInInspector] public float jumpGraceTimer;
     [HideInInspector] public float forceMoveXTimer;
-    [HideInInspector] public float climbButtonTimer;
+    //[HideInInspector] public float climbButtonTimer;
     [HideInInspector] public float dashAttackTimer;
     public float wallSlideTimer;
     public bool DashAttacking
@@ -63,10 +62,8 @@ public partial class PlayerEntity: MonoBehaviour
     }
     #endregion
 
-    #region 控制信号
     [Header("输入")]
     public Vector2 input_move;
-    #endregion
 
     private Queue<Collider2D>colliderQueue=new Queue<Collider2D>();
 
@@ -79,6 +76,7 @@ public partial class PlayerEntity: MonoBehaviour
         stateMachine.states.Add(new ClimbState(this));
         stateMachine.states.Add(new DashState(this));
         rd = GetComponent<Rigidbody2D>();
+        sprite=anim.GetComponent<SpriteRenderer>();
 
         scale = Vector3.one;
         facing = Face.Right;
@@ -88,7 +86,7 @@ public partial class PlayerEntity: MonoBehaviour
         input.Enable();
         maxFall = SpdSet.MaxFall;
         Ducking = false;
-        Stamina = PlaySet.ClimbMaxStamina;
+        Stamina = ClimbSet.ClimbMaxStamina;
     }
     private void OnDisable()
     {
@@ -111,7 +109,7 @@ public partial class PlayerEntity: MonoBehaviour
     {
         speed = rd.velocity;
 
-        //各种输入
+        //输入
         input_move = input.GamePlay.Move.ReadValue<Vector2>();
         input_move.x = input_move.x > 0 ? 1 : input_move.x < 0 ? -1 : 0;
         input_move.y = input_move.y > 0 ? 1 : input_move.y < 0 ? -1 : 0;
@@ -119,13 +117,13 @@ public partial class PlayerEntity: MonoBehaviour
         //变量计算
         onGround = CheckGround(Vector2.zero);
 
-#region 各种计时器
+        #region 各种计时器
         if (varJumpTimer > 0) varJumpTimer -= Time.deltaTime;
         if(dashAttackTimer>0) dashAttackTimer-=Time.deltaTime;
 
         if (onGround)
         {
-            jumpGraceTimer = Times.JumpGraceTime;
+            jumpGraceTimer = TimeSet.JumpGraceTime;
         }
         else if (jumpGraceTimer > 0)
             jumpGraceTimer -= Time.deltaTime;
@@ -151,19 +149,30 @@ public partial class PlayerEntity: MonoBehaviour
         {
             facing = (Face)input_move.x;
         }
-        //滑墙时间
-        if(onGround&&stateMachine.state!=(int)State.Climb)
+        //Climb相关
+        if(onGround&& stateMachine.state != (int)State.Climb)
         {
-            Stamina = PlaySet.ClimbMaxStamina;
-            wallSlideTimer = Times.WallSlideTime;
+            Stamina = ClimbSet.ClimbMaxStamina;
+            wallSlideTimer = TimeSet.WallSlideTime;
         }
+        //上墙等待赋值X速度
+        if (hopWaitX != 0)
+        {
+            if (speed.x * hopWaitX < 0)
+                hopWaitX = 0;
+            if (!CheckCollider(bodyBox, Vector2.right * (int)facing))
+            {
+                speed += hopWaitX * hopWaitXSpeed * Vector2.right;
+                hopWaitX = 0;
+            }
+        }
+
         #endregion
+
         UpdateSprite();
 
-        //状态机
         stateMachine.Update();
 
-        
         AnimUpdate();
             
         rd.velocity = speed;

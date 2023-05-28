@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections;
 using UnityEngine;
-using static Consts;
+using static PlayerEntity;
 
 public class Player
 {

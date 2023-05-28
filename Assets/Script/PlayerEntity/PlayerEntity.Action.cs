@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.UIElements.Experimental;
-using static Consts;
+using static PlayerEntity;
 
 public partial class PlayerEntity: MonoBehaviour
 {
@@ -10,8 +11,8 @@ public partial class PlayerEntity: MonoBehaviour
 
     public void Jump()
     {
-        varJumpTimer = Times.VarJumpTime;
-        wallSlideTimer = Times.WallSlideTime;
+        varJumpTimer = TimeSet.VarJumpTime;
+        wallSlideTimer = TimeSet.WallSlideTime;
         jumpGraceTimer = 0;
         speed.x += JumpXBoost * input_move.x;
         speed.y = JumpSpeed;
@@ -20,8 +21,8 @@ public partial class PlayerEntity: MonoBehaviour
 
     public void SuperJump()
     {
-        varJumpTimer = Times.VarJumpTime;
-        wallSlideTimer = Times.WallSlideTime;
+        varJumpTimer = TimeSet.VarJumpTime;
+        wallSlideTimer = TimeSet.WallSlideTime;
         jumpGraceTimer = 0;
         speed.x = SuperJumpX * (int)facing;
         speed.y = JumpSpeed;
@@ -45,15 +46,15 @@ public partial class PlayerEntity: MonoBehaviour
     public void WallJump(int dir)
     {
         Ducking = false;
-        varJumpTimer = Times.VarJumpTime;
-        wallSlideTimer = Times.WallSlideTime;
+        varJumpTimer = TimeSet.VarJumpTime;
+        wallSlideTimer = TimeSet.WallSlideTime;
         jumpGraceTimer = 0;
         speed.x = WallJumpXBoost * dir;
         speed.y = JumpSpeed;
         if (input_move.x != 0)
         {
             forceMoveX = dir;
-            forceMoveXTimer = Times.WallJumpForceTime;
+            forceMoveXTimer = TimeSet.WallJumpForceTime;
         }
         
         varJumpSpeed = speed.y;
@@ -63,19 +64,28 @@ public partial class PlayerEntity: MonoBehaviour
     public void SuperWallJump(int dir)
     {
         Ducking = false;
-        varJumpTimer = Times.SuperWallJumpVarTime;
-        wallSlideTimer = Times.WallSlideTime;
+        varJumpTimer = TimeSet.SuperWallJumpVarTime;
+        wallSlideTimer = TimeSet.WallSlideTime;
         jumpGraceTimer = 0;
         speed.x = SuperWallJumpX * dir;
         speed.y = SuperWallJumpSpeed;
         if (input_move.x != 0)
         {
             forceMoveX = dir;
-            forceMoveXTimer = Times.WallJumpForceTime;
+            forceMoveXTimer = TimeSet.WallJumpForceTime;
         }
         varJumpSpeed = speed.y;
     }
 
+
+    public void ClimbJump()
+    {
+        if (!onGround)
+        {
+            Stamina -= ClimbSet.ClimbJumpCost;
+        }
+        Jump();
+    }
 
     #endregion
 
@@ -117,12 +127,25 @@ public partial class PlayerEntity: MonoBehaviour
 
     #endregion
 
+    public float hopWaitX;
+    public float hopWaitXSpeed;
+    public Collider2D climbHopSolid;
     #region Climb
     public void ClimbHop()
     {
-        speed.x = (int)facing *  SpdSet.ClimbHopX;
+        climbHopSolid = CheckCollider(bodyBox, Vector2.right * (int)facing);
+        if(climbHopSolid != null )
+        {
+            hopWaitX = (int)facing;
+            hopWaitXSpeed= (int)facing * SpdSet.ClimbHopX;
+        }
+        else
+        {
+            hopWaitX = 0;
+            speed.x = (int)facing * SpdSet.ClimbHopX; 
+        }
         speed.y = Mathf.Min(speed.y, SpdSet.ClimbHopY);
-        forceMoveXTimer = Times.ClimbHopForceTime;
+        forceMoveXTimer = TimeSet.ClimbHopForceTime;
         forceMoveX = 0;
     }
     #endregion

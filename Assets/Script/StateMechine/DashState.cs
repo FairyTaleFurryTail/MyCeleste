@@ -4,7 +4,7 @@ using System.Runtime.InteropServices.ComTypes;
 using System.Runtime.Remoting.Messaging;
 using UnityEditor;
 using UnityEngine;
-using static Consts;
+using static PlayerEntity;
 
 public class DashState : BaseState
 {
@@ -27,16 +27,16 @@ public class DashState : BaseState
         pe.dashDir = pe.input_move;
         if (pe.dashDir == Vector2.zero)
             pe.dashDir = new Vector2((float)pe.facing, 0);
-        pe.dashAttackTimer = Times.DashAttackTime;
+        pe.dashAttackTimer = TimeSet.DashAttackTime;
     }
 
     public override State Update()
     {
 
-        if (pe.input.GamePlay.Climb.WasPressedThisFrame())
-            pe.climbButtonTimer = pe.climbButtonTime;
+/*        if (pe.input.GamePlay.Climb.WasPressedThisFrame())
+            pe.climbButtonTimer = pe.climbButtonTime;*/
 
-        if (pe.climbButtonTimer > 0 && pe.CheckCollider(pe.bodyBox, Vector2.right * (int)pe.facing))
+        if (pe.input.GamePlay.Climb.IsPressed() && pe.CheckCollider(pe.bodyBox, Vector2.right * (int)pe.facing + Vector2.up))
         {
             return State.Climb;
         }
@@ -82,7 +82,7 @@ public class DashState : BaseState
         pe.speed=newSpeed;
 
         pe.rd.gravityScale = 0;
-        yield return new WaitTime(Times.DashTime);
+        yield return new WaitTime(TimeSet.DashTime);
 
         if(spdDir.y>=0)
         {

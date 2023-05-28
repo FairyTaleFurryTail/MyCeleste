@@ -1,21 +1,21 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.UI;
-using static Consts;
+using static PlayerEntity;
 
 public partial class PlayerEntity: MonoBehaviour
 {
 
-    public bool CheckCollider(BoxCollider2D col, Vector2 dir, float dist = 0, string mask = "Solid") //单层检测使用
+    public Collider2D CheckCollider(BoxCollider2D col, Vector2 dir, float dist = 0, string mask = "Solid") //单层检测使用
     {
         ContactFilter2D contactFilter = new ContactFilter2D();
         contactFilter.SetLayerMask(LayerMask.GetMask(mask));
 
         Collider2D[] temp=new Collider2D[1];
         col.offset += dir * (dist + ColSet.OffsetDistance);
-        bool res = col.OverlapCollider(contactFilter, temp) > 0;
+        col.OverlapCollider(contactFilter, temp);
         col.offset -= dir * (dist + ColSet.OffsetDistance);
-        return res;
+        return temp[0];
     }
 
     public bool WallJumpCheck(int dir)

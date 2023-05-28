@@ -2,15 +2,20 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public static class Consts{
+public partial class PlayerEntity : MonoBehaviour
+{
     public static class Path
     {
         public static readonly string prefabPath = "Prefab/";
     }
 
-    public static class PlaySet
+    public static class ClimbSet
     {
         public const float ClimbMaxStamina=110;
+        public const float ClimbTiredThreshold = 20;
+        public const float ClimbUpCost = 100 / 2.2f;
+        public const float ClimbStillCost = 100 / 10f;
+        public const float ClimbJumpCost = ClimbMaxStamina / 4;
     }
 
     public static class ColSet
@@ -19,29 +24,26 @@ public static class Consts{
         public const float OffsetDistance = 0.02f;
     }
 
-    public static class PhySet
-    {
-        //public const float Gravity = 9.8f;
-        public const float AirMult = .65f;
-        
-    }
-
     public static class SpdSet
     {
         public const float DuckFriction = 62.5f;
 
         public const float EndDashUpMult = .75f;
 
+        public const float AirMult = .65f;
         public const float MaxFall= -16f;
         public const float FastMaxFall = -24f;
         public const float WallSlideStartMax = -2f;
         public const float FastMaxAccel = 30f;
 
-        public const float ClimbHopX = 10;
+        public const float ClimbHopX = 11;
         public const float ClimbHopY = 12;
+        public const float ClimbAccel = 90;
+        public const float ClimbUpSpeed = 4.5f;
+        public const float ClimbDownSpeed = -8;
     }
 
-    public static class Times
+    public static class TimeSet
     {
         /// <summary>ÌøÔ¾</summary>
         public const float VarJumpTime = .2f;
@@ -56,6 +58,8 @@ public static class Consts{
 
         public const float DashAttackTime=.3f;
         public const float DashTime = .15f;
+
+        public const float FlashInterval = .05f;
     }
 
 }

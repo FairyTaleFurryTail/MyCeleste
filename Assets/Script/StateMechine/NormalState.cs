@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
-using static Consts;
+using static PlayerEntity;
 public class NormalState : BaseState
 {
     public override State state => (int)State.Normal;
@@ -30,10 +30,11 @@ public class NormalState : BaseState
     public override State Update()
     {
         {
-            if (pe.input.GamePlay.Climb.WasPressedThisFrame())
-                pe.climbButtonTimer = pe.climbButtonTime;
+/*            if (pe.input.GamePlay.Climb.IsPressed())
+                pe.climbButtonTimer = pe.climbButtonTime;*/
 
-            if (pe.climbButtonTimer > 0 && pe.CheckCollider(pe.bodyBox,Vector2.right*(int)pe.facing))
+            if (pe.input.GamePlay.Climb.IsPressed() && pe.CheckCollider(pe.bodyBox,Vector2.right*(int)pe.facing+Vector2.up)&&
+                pe.Stamina>0)
             {
                 return State.Climb;
             }
@@ -69,7 +70,7 @@ public class NormalState : BaseState
         }
         else
         {
-            float mult = pe.onGround ? 1 : PhySet.AirMult;
+            float mult = pe.onGround ? 1 : SpdSet.AirMult;
             float max = pe.MaxRun;
             float moveX = pe.input_move.x;
             
@@ -117,8 +118,8 @@ public class NormalState : BaseState
                 }
                 if(pe.wallSlideDir!=0)
                 {
-                    falls = Mathf.Lerp(SpdSet.MaxFall, SpdSet.WallSlideStartMax, pe.wallSlideTimer / Times.WallSlideTime);
-                    if (pe.wallSlideTimer / Times.WallSlideTime > .65f)
+                    falls = Mathf.Lerp(SpdSet.MaxFall, SpdSet.WallSlideStartMax, pe.wallSlideTimer / TimeSet.WallSlideTime);
+                    if (pe.wallSlideTimer / TimeSet.WallSlideTime > .65f)
                     {
                         //特效
                     }

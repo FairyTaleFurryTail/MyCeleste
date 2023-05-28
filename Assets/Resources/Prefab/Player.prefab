@@ -756,9 +756,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68d204f331bb4c946bafc6838f7c4e42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hopWaitX: 0
+  hopWaitXSpeed: 0
+  climbHopSolid: {fileID: 0}
   rd: {fileID: 0}
-  sprite: {fileID: 6272610044560992907}
-  spriteTransform: {fileID: 0}
+  anim: {fileID: 6272610044560992907}
+  flashColor: {r: 1, g: 0.55, b: 0.55, a: 1}
   bodyBox: {fileID: 6146213611060866543}
   normalBox: {fileID: 6146213611060866543}
   duckBox: {fileID: 8081442587607144129}
@@ -775,7 +778,6 @@ MonoBehaviour:
   varJumpTimer: 0
   jumpGraceTimer: 0
   forceMoveXTimer: 0
-  climbButtonTimer: 0
   dashAttackTimer: 0
   wallSlideTimer: 0
   input_move: {x: 0, y: 0}

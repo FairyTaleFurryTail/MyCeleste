@@ -1,6 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
-using static Consts;
+using static PlayerEntity;
 
 public partial class PlayerEntity: MonoBehaviour
 {
@@ -19,5 +19,13 @@ public partial class PlayerEntity: MonoBehaviour
             _onGround = value;
         }
     }
-    
+
+    private bool IsTired
+    {
+        get
+        {
+            return Stamina < ClimbSet.ClimbTiredThreshold;
+        }
+    }
+
 }
