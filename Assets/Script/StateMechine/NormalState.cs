@@ -33,13 +33,22 @@ public class NormalState : BaseState
 /*            if (pe.input.GamePlay.Climb.IsPressed())
                 pe.climbButtonTimer = pe.climbButtonTime;*/
 
-            if (pe.input.GamePlay.Climb.IsPressed() && pe.CheckCollider(pe.bodyBox,Vector2.right*(int)pe.facing+Vector2.up)&&
-                pe.Stamina>0)
+            if (pe.input.GamePlay.Climb.IsPressed() &!pe.IsTired&&!pe.Ducking)
             {
-                return State.Climb;
+                //为了爬跳不会卡住，要往下落才能爬（我本来以为要个禁止爬墙计时器的，结果居然是这样- -）
+                if (pe.speed.y < 0 && pe.speed.x * (int)pe.facing >= 0)
+                {
+                    if (pe.CheckCollider(pe.bodyBox, Vector2.right * (int)pe.facing + Vector2.up))
+                    {
+                        pe.Ducking = false;
+                        return State.Climb;
+                    }
+                    
+                }
+                    
             }
 
-            if(pe.input.GamePlay.Dash.WasPerformedThisFrame())
+            if(pe.CanDash)
             {
                 return State.Dash;
             }

@@ -768,6 +768,8 @@ MonoBehaviour:
   scaleMult: 1
   speed: {x: 0, y: 0}
   dashDir: {x: 0, y: 0}
+  dashes: 0
+  maxDashes: 2
   maxFall: 0
   varJumpSpeed: 0
   forceMoveX: 0
@@ -779,6 +781,7 @@ MonoBehaviour:
   jumpGraceTimer: 0
   forceMoveXTimer: 0
   dashAttackTimer: 0
+  dashCooldownTimer: 0
   wallSlideTimer: 0
   input_move: {x: 0, y: 0}
   MaxRun: 9

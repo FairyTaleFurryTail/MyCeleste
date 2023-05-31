@@ -1,4 +1,6 @@
-﻿using System.Collections;
+﻿using Microsoft.SqlServer.Server;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using static PlayerEntity;
@@ -33,14 +35,73 @@ public partial class PlayerEntity: MonoBehaviour
         return hit.Length > 0 && hit[0].normal == Vector2.up;
     }
 
-    private void OnCollisionX(Collider2D col,int dire)
+    private Queue<CollisionData> collisionXQue = new Queue<CollisionData>();
+    private Queue<CollisionData> collisionYQue = new Queue<CollisionData>();
+    private void OnCollisionEnter2D(Collision2D collider)
     {
+        //Debug.Log(speed.y);
+        ContactPoint2D[] contactPoint = new ContactPoint2D[1];//碰撞方向的单位向量
+        collider.GetContacts(contactPoint);//获取碰撞点
+        //normal是指我相对碰撞点的位置
+        Vector2 normal = contactPoint[0].normal;
+        
+        //存在队列里，这一帧最后统一执行，防止混乱
+        if (normal.x != 0)
+            collisionXQue.Enqueue(new CollisionData(collider, normal ,speed));
+        if (normal.y!=0)
+            collisionYQue.Enqueue(new CollisionData(collider, normal , speed));
 
     }
 
-    private void OnCollisionY(Collider2D col,int dire)
+    private void ProcessCollisionDataX()
     {
+        while (collisionXQue.Count > 0)
+        {
+            CollisionData data = collisionXQue.Peek();
 
+            collisionXQue.Dequeue();
+        }
     }
 
+    private void ProcessCollisionDataY()
+    {
+        while(collisionYQue.Count > 0) 
+        {
+            CollisionData data=collisionYQue.Peek();
+            if (data.speed.y < 0)
+            {
+                //Dash Slide  改变滑向，并且Ducking
+                if (dashDir.x != 0 && dashDir.y < 0)
+                {
+                    Ducking = true;
+                    dashDir.y = 0;
+                    speed.y = 0;
+                    speed.x = data.speed.x * SpdSet.DodgeSlideSpeedMult;
+                }
+
+                if (stateMachine.state != (int)State.Climb)
+                {
+                    float squish = Mathf.Min(speed.y / SpdSet.FastMaxFall, 1);
+                    scale.x = Mathf.Lerp(1, 1.6f, squish);
+                    scale.y = Mathf.Lerp(1, .4f, squish);
+                }
+
+            }
+            collisionYQue.Dequeue();
+        }
+    }
+
+    private class CollisionData
+    {
+        public Collision2D col;
+        public Vector2 dir;
+        public Vector2 speed;
+
+        public CollisionData(Collision2D col, Vector2 dir, Vector2 speed)
+        {
+            this.col = col;
+            this.dir = dir;
+            this.speed = speed;
+        }
+    }
 }

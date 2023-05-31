@@ -20,11 +20,26 @@ public partial class PlayerEntity: MonoBehaviour
         }
     }
 
-    private bool IsTired
+    public bool IsTired
     {
         get
         {
             return Stamina < ClimbSet.ClimbTiredThreshold;
+        }
+    }
+
+    public bool CanDash
+    {
+        get 
+        {
+            return input.GamePlay.Dash.WasPressedThisFrame() && dashCooldownTimer <= 0 && dashes > 0; 
+         }
+    }
+    public bool DashAttacking
+    {
+        get
+        {
+            return dashAttackTimer > 0;
         }
     }
 

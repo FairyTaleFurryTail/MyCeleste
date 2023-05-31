@@ -25,6 +25,8 @@ public class DashState : BaseState
     {
         returnState = state;
         pe.dashDir = pe.input_move;
+        pe.dashes--;
+        pe.dashCooldownTimer = TimeSet.DashCooldown;
         if (pe.dashDir == Vector2.zero)
             pe.dashDir = new Vector2((float)pe.facing, 0);
         pe.dashAttackTimer = TimeSet.DashAttackTime;

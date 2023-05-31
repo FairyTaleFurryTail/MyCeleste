@@ -30,6 +30,8 @@ public partial class PlayerEntity: MonoBehaviour
     /// <summary>速度，会在Update最后赋值</summary>
     public Vector2 speed;
     public Vector2 dashDir;
+    [HideInInspector] public int dashes;
+    public int maxDashes;
     public float maxFall;
     /// <summary>保留速度用于计算长按</summary>
     [HideInInspector] public float varJumpSpeed;
@@ -50,16 +52,10 @@ public partial class PlayerEntity: MonoBehaviour
     /// <summary>土狼时间</summary>
     [HideInInspector] public float jumpGraceTimer;
     [HideInInspector] public float forceMoveXTimer;
-    //[HideInInspector] public float climbButtonTimer;
+
     [HideInInspector] public float dashAttackTimer;
+    [HideInInspector] public float dashCooldownTimer;
     public float wallSlideTimer;
-    public bool DashAttacking
-    {
-        get
-        {
-            return dashAttackTimer > 0;
-        }
-    }
     #endregion
 
     [Header("输入")]
@@ -118,15 +114,17 @@ public partial class PlayerEntity: MonoBehaviour
         onGround = CheckGround(Vector2.zero);
 
         #region 各种计时器
-        if (varJumpTimer > 0) varJumpTimer -= Time.deltaTime;
-        if(dashAttackTimer>0) dashAttackTimer-=Time.deltaTime;
+        varJumpTimer.TimePassBy();
+        dashAttackTimer.TimePassBy();
+        dashCooldownTimer.TimePassBy();
 
         if (onGround)
         {
             jumpGraceTimer = TimeSet.JumpGraceTime;
+            dashes = maxDashes;
         }
-        else if (jumpGraceTimer > 0)
-            jumpGraceTimer -= Time.deltaTime;
+        else
+        { jumpGraceTimer.TimePassBy(); }
 
         //由游戏控制input.x
         if (forceMoveXTimer > 0)
@@ -173,6 +171,9 @@ public partial class PlayerEntity: MonoBehaviour
 
         stateMachine.Update();
 
+        ProcessCollisionDataX();
+        ProcessCollisionDataY();
+
         AnimUpdate();
             
         rd.velocity = speed;
@@ -181,23 +182,6 @@ public partial class PlayerEntity: MonoBehaviour
         scale.x *= (int)facing;
     }
 
-    private void OnCollisionEnter2D(Collision2D collider)
-    {
-        ContactPoint2D[] contactPoint = new ContactPoint2D[1];//存储碰撞方向的单位向量
-        collider.GetContacts(contactPoint);//获取碰撞点
-        //normal是指我相对碰撞点的位置
-        Vector2 normal = contactPoint[0].normal;
-        if(normal.y>0)
-        {
-            if (speed.y < 0)
-            {
-                float squish = Mathf.Min(speed.y / SpdSet.FastMaxFall, 1);
-                scale.x = Mathf.Lerp(1, 1.6f, squish);
-                scale.y = Mathf.Lerp(1, .4f, squish);
-            }
-        }
-        //colliderQueue.
-    }
 
     #region 常量
     [Header("常量")]
