@@ -39,6 +39,7 @@ public partial class PlayerEntity: MonoBehaviour
     [HideInInspector] public int forceMoveX;
     [HideInInspector] public Face facing;
     [HideInInspector] public int wallSlideDir;
+    [HideInInspector] public bool dashStartedOnGround;
     public Vector3 scale;
     
 
@@ -60,8 +61,6 @@ public partial class PlayerEntity: MonoBehaviour
 
     [Header("输入")]
     public Vector2 input_move;
-
-    private Queue<Collider2D>colliderQueue=new Queue<Collider2D>();
 
     #region 初始化函数
     private void Awake()
@@ -171,8 +170,7 @@ public partial class PlayerEntity: MonoBehaviour
 
         stateMachine.Update();
 
-        ProcessCollisionDataX();
-        ProcessCollisionDataY();
+        ProcessCollisionDatas();
 
         AnimUpdate();
             

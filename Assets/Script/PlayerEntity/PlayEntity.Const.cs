@@ -22,6 +22,8 @@ public partial class PlayerEntity : MonoBehaviour
     {
         public const float WallJumpCheckDist = .6f;
         public const float OffsetDistance = 0.02f;
+        public const int DashCornerCorrection = 4;
+        public const float CorrectStep = 0.15f;
     }
 
     public static class SpdSet

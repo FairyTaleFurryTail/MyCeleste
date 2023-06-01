@@ -26,6 +26,7 @@ public class DashState : BaseState
         returnState = state;
         pe.dashDir = pe.input_move;
         pe.dashes--;
+        pe.dashStartedOnGround = pe.onGround;
         pe.dashCooldownTimer = TimeSet.DashCooldown;
         if (pe.dashDir == Vector2.zero)
             pe.dashDir = new Vector2((float)pe.facing, 0);
@@ -69,7 +70,19 @@ public class DashState : BaseState
         }
         else
         {
-            
+            if (pe.input.GamePlay.Jump.WasPressedThisFrame())
+            {
+                if (pe.WallJumpCheck((int)pe.facing * -1))
+                {
+                    pe.WallJump((int)pe.facing);
+                    return State.Normal;
+                }
+                else if (pe.WallJumpCheck((int)pe.facing))
+                {
+                    pe.WallJump((int)pe.facing * -1);
+                    return State.Normal;
+                }
+            }
         }
 
         return returnState;

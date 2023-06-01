@@ -20,6 +20,12 @@ public partial class PlayerEntity: MonoBehaviour
         }
     }
 
+    public Vector2 Position
+    {
+        get { return transform.position; }
+        set { transform.position = value; }
+    }
+
     public bool IsTired
     {
         get

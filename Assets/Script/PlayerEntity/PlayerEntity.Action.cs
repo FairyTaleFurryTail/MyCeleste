@@ -131,9 +131,9 @@ public partial class PlayerEntity: MonoBehaviour
 
     #endregion
 
-    public float hopWaitX;
-    public float hopWaitXSpeed;
-    public Collider2D climbHopSolid;
+    [HideInInspector] public float hopWaitX;
+    [HideInInspector] public float hopWaitXSpeed;
+    [HideInInspector] public Collider2D climbHopSolid;
     #region Climb
     public void ClimbHop()
     {
