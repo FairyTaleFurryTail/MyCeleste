@@ -123,7 +123,7 @@ public partial class PlayerEntity: MonoBehaviour
                 return false;
             bool was = normalBox.gameObject.activeSelf;
             normalBox.gameObject.SetActive(true);
-            bool res = !CheckCollider(normalBox,Vector2.up);
+            bool res = BoxFreeAt(Position, bodyBox);
             normalBox.gameObject.SetActive(was);
             return res;
         }

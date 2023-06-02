@@ -10,26 +10,15 @@ public partial class PlayerEntity: MonoBehaviour
 
     public Collider2D CheckCollider(BoxCollider2D col, Vector2 dir, float dist = 0, string mask = "Solid") //单层检测使用
     {
-        if (Mathf.Abs(dir.x) + Mathf.Abs(dir.y) > 2)
-            dir = dir.normalized;
-        ContactFilter2D contactFilter = new ContactFilter2D();
-        contactFilter.SetLayerMask(LayerMask.GetMask(mask));
-
-        Collider2D[] temp=new Collider2D[1];
-        col.offset += dir * (dist + ColSet.OffsetDistance);
-        col.OverlapCollider(contactFilter, temp);
-        col.offset -= dir * (dist + ColSet.OffsetDistance);
-        return temp[0];
+        return CheckCollider(Position, col, dir, dist, mask);
     }
-
+    //这里一开始是直接移动碰撞体来检测，发现不行
     public Collider2D CheckCollider(Vector2 pos,BoxCollider2D col, Vector2 dir, float dist = 0, string mask = "Solid") //单层检测使用
     {
-        Vector3 savePos = col.transform.position;
-        col.transform.position = (Vector3)pos + col.transform.localPosition;
-        Collider2D res = CheckCollider(col, dir, dist, mask);
-        col.transform.position = savePos;
-        //Debug.Log(pos); Debug.Log(col.transform.localPosition); Debug.Log(col.transform.position);
-        return res;
+        dir = dir.normalized;
+        //pos是玩家位置，所以要加上碰撞体本地位置
+        pos += dir * (dist + ColSet.OffsetDistance) + (Vector2)col.transform.localPosition;
+        return Physics2D.OverlapBox(pos, col.size, 0, LayerMask.GetMask(mask));
     }
 
     public bool WallJumpCheck(int dir)
@@ -39,32 +28,23 @@ public partial class PlayerEntity: MonoBehaviour
 
     private bool CheckGround(Vector2 offset, string mask = "Solid")
     {
-        ContactFilter2D contactFilter = new ContactFilter2D();
-        contactFilter.SetLayerMask(LayerMask.GetMask(mask));
-        RaycastHit2D[] hit = new RaycastHit2D[1];
-        //使用的是向下cast碰撞体实现（也可以通过碰撞点的方向判断）
-        bodyBox.transform.position += (Vector3)offset;
-        bodyBox.Cast(Vector2.down,contactFilter, hit,ColSet.OffsetDistance);
-        bodyBox.transform.position -= (Vector3)offset;
-        return hit.Length > 0 && hit[0].normal == Vector2.up;
+        //使用的是向下cast碰撞体实现
+        Vector2 pos= bodyBox.transform.position + (Vector3)offset;
+        RaycastHit2D hit = Physics2D.BoxCast(pos, bodyBox.size, 0, Vector2.down, ColSet.OffsetDistance, LayerMask.GetMask(mask));
+        return hit && hit.normal == Vector2.up;
     }
 
-    private bool DuckFreeAt(Vector2 pos)
+    private bool BoxFreeAt(Vector2 pos,BoxCollider2D col)
     {
-        bool saveActive = duckBox.gameObject.activeSelf;
-        Vector3 savePos = duckBox.transform.position;
-        Vector2 saveSize = duckBox.size;
-        duckBox.gameObject.SetActive(true);
-        duckBox.transform.position = (Vector3)pos + duckBox.transform.localPosition;
-        duckBox.size *= 0.95f;
-        bool res = !CheckCollider(duckBox, Vector2.zero);
-        duckBox.transform.position = savePos;
-        duckBox.size = saveSize;
-        duckBox.gameObject.SetActive(saveActive);
+        bool saveActive = col.gameObject.activeSelf;
+        Vector2 saveSize = col.size;
+        col.gameObject.SetActive(true);
+        col.size *= 0.95f;
+        bool res = !CheckCollider(pos,col, Vector2.zero);
+        col.gameObject.SetActive(saveActive);
+        col.size = saveSize;
         return res;
     }
-
-
 
     private Queue<CollisionData> collisionXQue = new Queue<CollisionData>();
     private Queue<CollisionData> collisionYQue = new Queue<CollisionData>();
@@ -104,7 +84,7 @@ public partial class PlayerEntity: MonoBehaviour
     {
         if (stateMachine.state == (int)State.Dash)
         {
-            if (onGround && DuckFreeAt(Position + Vector2.right * data.speed * Time.deltaTime))
+            if (onGround && BoxFreeAt(Position + Vector2.right * data.speed * Time.deltaTime,duckBox))
             {
                 Ducking = true;
                 return;
@@ -113,10 +93,11 @@ public partial class PlayerEntity: MonoBehaviour
             {
                 for (int i = 1; i <= ColSet.DashCornerCorrection; i++)
                     for (int d = 1; d >= -1; d -= 2)
-                        if (!CheckCollider(Position + Vector2.up * d * i * ColSet.CorrectStep, bodyBox, data.speed.normalized))
+                        if (!CheckCollider(Position + Vector2.up * d * i * ColSet.CorrectXStep, bodyBox, data.speed.normalized))
                         {
-                            Position += Vector2.up * d * i * ColSet.CorrectStep;
+                            Position += Vector2.up * d * i * ColSet.CorrectXStep;
                             speed = data.speed;
+                            //Debug.Log("XSuccess");
                             return;
                         }
             }
@@ -128,16 +109,21 @@ public partial class PlayerEntity: MonoBehaviour
         if (data.speed.y < 0)//下落时
         {
             //一般玩家向下冲是不想落地的（否则直接落地就好了），所以要绕开地面。原地下冲不算
+            //不能往移动的反向偏移
             if(stateMachine.state == (int)State.Dash&&!dashStartedOnGround)
             {
                 for (int i = 1; i <= ColSet.DashCornerCorrection; i++)
                     for (int d = 1; d >= -1; d -= 2)
-                        if (!CheckGround(new Vector2(0, i * d * ColSet.CorrectStep)))
+                    {
+                        if (d * data.speed.x < 0) continue;
+                        Vector2 offset = new Vector2(i * d * ColSet.CorrectYStep,0 );
+                        if (!CheckGround(offset))
                         {
-                            Position += new Vector2(0, i * d * ColSet.CorrectStep);
+                            Position += offset;
                             speed = data.speed;
                             return;
                         }
+                    }
             }
 
             //Dash Slide  改变滑向，并且Ducking
@@ -158,11 +144,26 @@ public partial class PlayerEntity: MonoBehaviour
         }
         else if(data.speed.y > 0)
         {
-
+            //不需要Dash，因为向上就是不想撞墙
+            {
+                for (int i = 1; i <= ColSet.DashCornerCorrection; i++)
+                    for (int d = 1; d >= -1; d -= 2)
+                    {
+                        if (data.speed.x * d < 0) continue;
+                        Vector2 newPos = Position + new Vector2(i * d * ColSet.CorrectYStep,0);
+                        if (!CheckCollider(newPos, bodyBox, data.speed.normalized))
+                        {
+                            Position = newPos;
+                            speed = data.speed;
+                            //Debug.Log("YSuccess");
+                            return;
+                        }
+                    }
+            }
         }
     }
 
-    public class CollisionData
+    public struct CollisionData
     {
         public Collision2D col;
         public Vector2 dir;
