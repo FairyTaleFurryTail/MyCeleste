@@ -29,23 +29,20 @@ public class NormalState : BaseState
 
     public override State Update()
     {
-        {
-/*            if (pe.input.GamePlay.Climb.IsPressed())
-                pe.climbButtonTimer = pe.climbButtonTime;*/
-
+        {//爬墙
             if (pe.input.GamePlay.Climb.IsPressed() &!pe.IsTired&&!pe.Ducking)
             {
                 //为了爬跳不会卡住，要往下落才能爬（我本来以为要个禁止爬墙计时器的，结果居然是这样- -）
-                if (pe.speed.y < 0 && pe.speed.x * (int)pe.facing >= 0)
+                if (pe.speed.y <= 0 && pe.speed.x * (int)pe.facing >= 0)
                 {
-                    if (pe.CheckCollider(pe.bodyBox, Vector2.right * (int)pe.facing + Vector2.up))
+                    //if(pe.CheckCollider(pe.bodyBox, Vector2.right * (int)pe.facing))
+                    if(pe.CastCheckCollider(Vector2.zero, Vector2.right * (int)pe.facing))
                     {
                         pe.Ducking = false;
                         return State.Climb;
                     }
                     
                 }
-                    
             }
 
             if(pe.CanDash)

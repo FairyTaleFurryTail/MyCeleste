@@ -2,23 +2,25 @@
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 using static PlayerEntity;
+using static Calc;
 
 public partial class PlayerEntity: MonoBehaviour
 {
 
-    public Collider2D CheckCollider(BoxCollider2D col, Vector2 dir, float dist = 0, string mask = "Solid") //单层检测使用
+    public Collider2D CheckCollider(BoxCollider2D col, Vector2 dir, float dist = 0, string mask = "Solid")
     {
         return CheckCollider(Position, col, dir, dist, mask);
     }
     //这里一开始是直接移动碰撞体来检测，发现不行
-    public Collider2D CheckCollider(Vector2 pos,BoxCollider2D col, Vector2 dir, float dist = 0, string mask = "Solid") //单层检测使用
+    public Collider2D CheckCollider(Vector2 pos,BoxCollider2D col, Vector2 dir, float dist = 0, string mask = "Solid")
     {
-        dir = dir.normalized;
+        dir = dir.normalized;//以防万一
         //pos是玩家位置，所以要加上碰撞体本地位置
         pos += dir * (dist + ColSet.OffsetDistance) + (Vector2)col.transform.localPosition;
-        return Physics2D.OverlapBox(pos, col.size, 0, LayerMask.GetMask(mask));
+        Collider2D collider = Physics2D.OverlapBox(pos, col.size, 0, LayerMask.GetMask(mask));
+        //Debug.Log(dir + " " + Physics2D.OverlapBoxAll(pos, col.size, 0, LayerMask.GetMask(mask)).Length);
+        return collider;
     }
 
     public bool WallJumpCheck(int dir)
@@ -26,12 +28,14 @@ public partial class PlayerEntity: MonoBehaviour
         return CheckCollider(bodyBox, Vector2.right * dir, ColSet.WallJumpCheckDist);
     }
 
-    private bool CheckGround(Vector2 offset, string mask = "Solid")
+    /// <summary>注重方向，使用了Cast的碰撞检测，注意dir只能有一维</summary>
+    public bool CastCheckCollider(Vector2 offset,Vector2 dir, string mask = "Solid")
     {
-        //使用的是向下cast碰撞体实现
-        Vector2 pos= bodyBox.transform.position + (Vector3)offset;
-        RaycastHit2D hit = Physics2D.BoxCast(pos, bodyBox.size, 0, Vector2.down, ColSet.OffsetDistance, LayerMask.GetMask(mask));
-        return hit && hit.normal == Vector2.up;
+        //使用的是向下cast碰撞体实现（其实不用cast也可以，都用用吧）
+        Vector2 pos= (Vector2)bodyBox.transform.position + offset;
+        RaycastHit2D hit = Physics2D.BoxCast(pos, bodyBox.size, 0, dir, ColSet.OffsetDistance, LayerMask.GetMask(mask));
+        //Debug.Log(dir+" "+Physics2D.BoxCastAll(pos, bodyBox.size, 0, dir, ColSet.OffsetDistance, LayerMask.GetMask(mask)).Length);
+        return hit && hit.normal == dir * -1;
     }
 
     private bool BoxFreeAt(Vector2 pos,BoxCollider2D col)
@@ -50,12 +54,8 @@ public partial class PlayerEntity: MonoBehaviour
     private Queue<CollisionData> collisionYQue = new Queue<CollisionData>();
     private void OnCollisionEnter2D(Collision2D collider)
     {
-        //Debug.Log(speed.y);
-        ContactPoint2D[] contactPoint = new ContactPoint2D[1];//碰撞方向的单位向量
-        collider.GetContacts(contactPoint);//获取碰撞点
         //normal是指我相对碰撞点的位置
-        Vector2 normal = contactPoint[0].normal;
-        
+        Vector2 normal = collider.GetContanctDirection();
         //存在队列里，这一帧最后统一执行，防止混乱
         if (normal.x != 0)
             collisionXQue.Enqueue(new CollisionData(collider, normal ,speed));
@@ -93,7 +93,7 @@ public partial class PlayerEntity: MonoBehaviour
             {
                 for (int i = 1; i <= ColSet.DashCornerCorrection; i++)
                     for (int d = 1; d >= -1; d -= 2)
-                        if (!CheckCollider(Position + Vector2.up * d * i * ColSet.CorrectXStep, bodyBox, data.speed.normalized))
+                        if (!CheckCollider(Position + Vector2.up * d * i * ColSet.CorrectXStep, bodyBox ,Vector2.zero))
                         {
                             Position += Vector2.up * d * i * ColSet.CorrectXStep;
                             speed = data.speed;
@@ -117,7 +117,7 @@ public partial class PlayerEntity: MonoBehaviour
                     {
                         if (d * data.speed.x < 0) continue;
                         Vector2 offset = new Vector2(i * d * ColSet.CorrectYStep,0 );
-                        if (!CheckGround(offset))
+                        if (!CastCheckCollider(offset,Vector2.down))
                         {
                             Position += offset;
                             speed = data.speed;

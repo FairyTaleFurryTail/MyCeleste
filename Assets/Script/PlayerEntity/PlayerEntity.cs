@@ -110,7 +110,7 @@ public partial class PlayerEntity: MonoBehaviour
         input_move.y = input_move.y > 0 ? 1 : input_move.y < 0 ? -1 : 0;
 
         //变量计算
-        onGround = CheckGround(Vector2.zero);
+        onGround = CastCheckCollider(Vector2.zero,Vector2.down);
 
         #region 各种计时器
         varJumpTimer.TimePassBy();
@@ -166,13 +166,13 @@ public partial class PlayerEntity: MonoBehaviour
 
         #endregion
 
-        UpdateSprite();
+        UpdateAnim();
 
         stateMachine.Update();
 
         ProcessCollisionDatas();
 
-        AnimUpdate();
+        UpdateSprite();
             
         rd.velocity = speed;
         scale.x *= (int)facing;

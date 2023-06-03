@@ -35,11 +35,7 @@ public class DashState : BaseState
 
     public override State Update()
     {
-
-/*        if (pe.input.GamePlay.Climb.WasPressedThisFrame())
-            pe.climbButtonTimer = pe.climbButtonTime;*/
-
-        if (pe.input.GamePlay.Climb.IsPressed() && pe.CheckCollider(pe.bodyBox, Vector2.right * (int)pe.facing + Vector2.up))
+        if (pe.input.GamePlay.Climb.IsPressed() && pe.CastCheckCollider(Vector2.zero, Vector2.right * (int)pe.facing))
         {
             return State.Climb;
         }
