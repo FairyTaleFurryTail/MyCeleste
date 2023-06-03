@@ -6,14 +6,17 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using static PlayerEntity;
 
-public enum IntroTypes { Transition, Respawn, WalkInRight, WalkInLeft, Jump, WakeUp, Fall, TempleMirrorVoid, None }
+public enum IntroTypes { Transition, Respawn, WalkInRight, WalkInLeft, Jump, WakeUp, Fall, None }
 public enum Face {Left=-1,Right=1}
 
 public partial class PlayerEntity: MonoBehaviour
 {
+    public Vector2 idleOffset,runOffset,jumpUpOffset,jumpDownOffset,duckOffset,dashOffset,climbUpOffset,climbDownOffset;
+
     #region 配置
     public PlayerInput input;
     [HideInInspector]public Rigidbody2D rd;
+    [SerializeField]private Tail tail;
     private ActionStateMechine stateMachine;
     private IntroTypes introType;
     [Header("设置")]
@@ -29,10 +32,10 @@ public partial class PlayerEntity: MonoBehaviour
     #region vars
     /// <summary>速度，会在Update最后赋值</summary>
     public Vector2 speed;
-    public Vector2 dashDir;
+    [HideInInspector] public Vector2 dashDir;
     [HideInInspector] public int dashes;
     public int maxDashes;
-    public float maxFall;
+    [HideInInspector] public float maxFall;
     /// <summary>保留速度用于计算长按</summary>
     [HideInInspector] public float varJumpSpeed;
     /// <summary>跳跃一定时间内不能转向</summary>
@@ -40,7 +43,7 @@ public partial class PlayerEntity: MonoBehaviour
     [HideInInspector] public Face facing;
     [HideInInspector] public int wallSlideDir;
     [HideInInspector] public bool dashStartedOnGround;
-    public Vector3 scale;
+    [HideInInspector] public Vector3 scale;
     
 
     //状态计算所需
@@ -56,11 +59,11 @@ public partial class PlayerEntity: MonoBehaviour
 
     [HideInInspector] public float dashAttackTimer;
     [HideInInspector] public float dashCooldownTimer;
-    public float wallSlideTimer;
+    [HideInInspector] public float wallSlideTimer;
     #endregion
 
     [Header("输入")]
-    public Vector2 input_move;
+    [HideInInspector] public Vector2 input_move;
 
     #region 初始化函数
     private void Awake()
@@ -166,7 +169,7 @@ public partial class PlayerEntity: MonoBehaviour
 
         #endregion
 
-        UpdateAnim();
+        UpdateAnimAndTail();
 
         stateMachine.Update();
 

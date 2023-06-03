@@ -41,7 +41,6 @@ public class NormalState : BaseState
                         pe.Ducking = false;
                         return State.Climb;
                     }
-                    
                 }
             }
 
@@ -131,11 +130,8 @@ public class NormalState : BaseState
                     }
                 }
             }
-
             pe.speed.y = Mathf.MoveTowards(pe.speed.y, falls, pe.Gravity * Time.deltaTime);
         }
-
-
 
         if (pe.varJumpTimer > 0)
         {

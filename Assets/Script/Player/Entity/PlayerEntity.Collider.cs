@@ -7,7 +7,6 @@ using static Calc;
 
 public partial class PlayerEntity: MonoBehaviour
 {
-
     public Collider2D CheckCollider(BoxCollider2D col, Vector2 dir, float dist = 0, string mask = "Solid")
     {
         return CheckCollider(Position, col, dir, dist, mask);
@@ -31,11 +30,11 @@ public partial class PlayerEntity: MonoBehaviour
     /// <summary>注重方向，使用了Cast的碰撞检测，注意dir只能有一维</summary>
     public bool CastCheckCollider(Vector2 offset,Vector2 dir, string mask = "Solid")
     {
-        //使用的是向下cast碰撞体实现（其实不用cast也可以，都用用吧）
         Vector2 pos= (Vector2)bodyBox.transform.position + offset;
-        RaycastHit2D hit = Physics2D.BoxCast(pos, bodyBox.size, 0, dir, ColSet.OffsetDistance, LayerMask.GetMask(mask));
-        //Debug.Log(dir+" "+Physics2D.BoxCastAll(pos, bodyBox.size, 0, dir, ColSet.OffsetDistance, LayerMask.GetMask(mask)).Length);
-        return hit && hit.normal == dir * -1;
+        foreach(var hit in Physics2D.BoxCastAll(pos, bodyBox.size, 0, dir, ColSet.OffsetDistance, LayerMask.GetMask(mask)))
+            if (hit.normal == dir * -1)
+                return true;
+        return false;
     }
 
     private bool BoxFreeAt(Vector2 pos,BoxCollider2D col)

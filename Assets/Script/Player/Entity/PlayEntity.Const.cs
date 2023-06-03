@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,6 +8,11 @@ public partial class PlayerEntity : MonoBehaviour
     public static class Path
     {
         public static readonly string prefabPath = "Prefab/";
+    }
+
+    public static class TailMove
+    {
+        //public static readonly Vector2 vector2 = new Vector2(1,1);
     }
 
     public static class ClimbSet

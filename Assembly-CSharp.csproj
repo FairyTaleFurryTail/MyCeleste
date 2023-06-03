@@ -58,30 +58,31 @@
     <Analyzer Include="D:\Software\Program\Unity\Editor\2022.2.15f1c1\Editor\Data\Tools\Unity.SourceGenerators\Unity.Properties.SourceGenerator.dll" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Script\StateMechine\ActionStateMechine.cs" />
-    <Compile Include="Assets\Script\PlayerRender.cs" />
+    <Compile Include="Assets\Script\Player\PlayerRender.cs" />
     <Compile Include="Assets\Script\Tool\Singleton.cs" />
-    <Compile Include="Assets\Script\PlayerEntity\PlayerEntity.Anim.cs" />
+    <Compile Include="Assets\Script\Player\Entity\PlayerEntity.Collider.cs" />
+    <Compile Include="Assets\Script\Player\Entity\PlayerEntity.cs" />
+    <Compile Include="Assets\Script\Player\Entity\PlayEntity.Const.cs" />
     <Compile Include="Assets\Script\Level.cs" />
+    <Compile Include="Assets\Script\Player\Entity\PlayerEntity.Action.cs" />
+    <Compile Include="Assets\Script\Player\StateMechine\DashState.cs" />
     <Compile Include="Assets\Script\MyCustom\StateCoroutine.cs" />
-    <Compile Include="Assets\Script\PlayerEntity\PlayEntity.Property.cs" />
-    <Compile Include="Assets\Script\PlayerEntity\PlayerEntity.Collider.cs" />
-    <Compile Include="Assets\Script\Player.cs" />
-    <Compile Include="Assets\Script\StateMechine\BaseState.cs" />
-    <Compile Include="Assets\Script\PlayerEntity\PlayerEntity.cs" />
-    <Compile Include="Assets\Script\PlayerEntity\PlayerEntity.Action.cs" />
-    <Compile Include="Assets\Script\StateMechine\ClimbState.cs" />
+    <Compile Include="Assets\Script\Player\StateMechine\NormalState.cs" />
+    <Compile Include="Assets\Script\Player\Player.cs" />
     <Compile Include="Assets\Script\LevelManager.cs" />
+    <Compile Include="Assets\Script\Player\Tail.cs" />
     <Compile Include="Assets\Script\Tool\SingletonMono.cs" />
     <Compile Include="Assets\Settings\InputSystem\PlayerInput.cs" />
+    <Compile Include="Assets\Script\Player\StateMechine\BaseState.cs" />
+    <Compile Include="Assets\Script\Player\Entity\PlayEntity.Property.cs" />
+    <Compile Include="Assets\Script\Player\Entity\PlayerEntity.Anim.cs" />
     <Compile Include="Assets\Script\Tool\IntervalTimer.cs" />
-    <Compile Include="Assets\Script\StateMechine\NormalState.cs" />
     <Compile Include="Assets\Script\Tool\Calc.cs" />
     <Compile Include="Assets\Script\MyCustom\CoroutineManager.cs" />
     <Compile Include="Assets\Script\SceneParticleManager.cs" />
+    <Compile Include="Assets\Script\Player\StateMechine\ClimbState.cs" />
     <Compile Include="Assets\Script\MyCustom\TitleAttribute.cs" />
-    <Compile Include="Assets\Script\PlayerEntity\PlayEntity.Const.cs" />
-    <Compile Include="Assets\Script\StateMechine\DashState.cs" />
+    <Compile Include="Assets\Script\Player\StateMechine\ActionStateMechine.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="UnityEngine">
