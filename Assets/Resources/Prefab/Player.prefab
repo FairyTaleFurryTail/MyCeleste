@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8248239773484522004}
   - component: {fileID: 3127568191738718947}
   m_Layer: 0
-  m_Name: TailPart (1)
+  m_Name: T4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 7312412812561456680}
   - component: {fileID: 4828816499797272581}
   m_Layer: 0
-  m_Name: TailPart
+  m_Name: T3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -179,7 +179,7 @@ GameObject:
   - component: {fileID: 7441597268065647969}
   - component: {fileID: 4321948981413182560}
   m_Layer: 0
-  m_Name: TailPart (4)
+  m_Name: T7
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -252,6 +252,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &1891073874179822824
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7011469905619469164}
+  m_Layer: 0
+  m_Name: Ruler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7011469905619469164
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1891073874179822824}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: -0.6, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2114818799987327095}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2373217926560513170
 GameObject:
   m_ObjectHideFlags: 0
@@ -450,7 +481,7 @@ GameObject:
   - component: {fileID: 5359534511871733490}
   - component: {fileID: 6119275578184914202}
   m_Layer: 0
-  m_Name: TailPart (5)
+  m_Name: T8
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -534,7 +565,7 @@ GameObject:
   - component: {fileID: 4999198388485277641}
   - component: {fileID: 4001164192715389923}
   m_Layer: 0
-  m_Name: TailPart (3)
+  m_Name: T6
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -855,7 +886,7 @@ GameObject:
   - component: {fileID: 7957782846260968787}
   - component: {fileID: 1084904263807942437}
   m_Layer: 0
-  m_Name: TailRoot
+  m_Name: T2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -928,6 +959,50 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &7144177494365066964
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1146501835663733893}
+  - component: {fileID: 3997419755699377864}
+  m_Layer: 0
+  m_Name: Effect
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1146501835663733893
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7144177494365066964}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 2114818799987327095}
+  m_RootOrder: -1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &3997419755699377864
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7144177494365066964}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 602d3bca64b72cd45a2f179524a2a4e8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &7552414575630757309
 GameObject:
   m_ObjectHideFlags: 0
@@ -939,7 +1014,7 @@ GameObject:
   - component: {fileID: 6473718659510423481}
   - component: {fileID: 5133051409931700112}
   m_Layer: 0
-  m_Name: TailPart (2)
+  m_Name: T5
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1023,7 +1098,7 @@ GameObject:
   - component: {fileID: 7378438075032198421}
   - component: {fileID: 7244975083807796083}
   m_Layer: 0
-  m_Name: Root (1)
+  m_Name: T1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1129,8 +1204,10 @@ Transform:
   - {fileID: 5609864911708140933}
   - {fileID: 4779739914925813283}
   - {fileID: 6249118424222791968}
+  - {fileID: 1146501835663733893}
+  - {fileID: 7011469905619469164}
   m_Father: {fileID: 0}
-  m_RootOrder: 0
+  m_RootOrder: 4
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!50 &1850083215570413514
 Rigidbody2D:
@@ -1176,6 +1253,7 @@ MonoBehaviour:
   climbHopSolid: {fileID: 0}
   rd: {fileID: 1850083215570413514}
   tail: {fileID: 6474795559398078213}
+  effctor: {fileID: 3997419755699377864}
   anim: {fileID: 6272610044560992907}
   flashColor: {r: 1, g: 0.55, b: 0.55, a: 1}
   bodyBox: {fileID: 6146213611060866543}

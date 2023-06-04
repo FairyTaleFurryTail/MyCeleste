@@ -16,11 +16,13 @@ public partial class PlayerEntity: MonoBehaviour
 
     #region ≈‰÷√
     public PlayerInput input;
-    [HideInInspector]public Rigidbody2D rd;
-    [SerializeField]private Tail tail;
+    [HideInInspector] public Rigidbody2D rd;
     private ActionStateMechine stateMachine;
     private IntroTypes introType;
+
     [Header("…Ë÷√")]
+    [SerializeField] private Tail tail;
+    [SerializeField] private Effector effctor;
     [Title("∂Øª≠øÿ÷∆"), SerializeField] private Animator anim;
     [SerializeField] private Color flashColor;
     private SpriteRenderer sprite;

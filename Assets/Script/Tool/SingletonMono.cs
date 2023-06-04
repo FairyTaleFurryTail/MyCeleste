@@ -3,9 +3,9 @@ using UnityEngine;
 
 public class SingletonMono<T>: MonoBehaviour where T : MonoBehaviour
 {
-    public T Instance { get; private set; }
+    public static T Instance { get; private set; }
 
-    void Awake()
+    protected virtual void Awake()
     {
         if (Instance == null)
             Instance = (T)(object)this;

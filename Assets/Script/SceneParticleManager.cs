@@ -4,15 +4,10 @@ using UnityEngine;
 
 public class SceneParticleManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private ParticleSystem dustOnLand;
+    public void DustOnLand(Vector3 position)
     {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
+        dustOnLand.transform.position = position;
+        dustOnLand.Play();
     }
 }
