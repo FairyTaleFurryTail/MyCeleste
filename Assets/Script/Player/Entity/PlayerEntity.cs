@@ -11,7 +11,8 @@ public enum Face {Left=-1,Right=1}
 
 public partial class PlayerEntity: MonoBehaviour
 {
-    public Vector2 idleOffset,runOffset,jumpUpOffset,jumpDownOffset,duckOffset,dashOffset,climbUpOffset,climbDownOffset;
+    /*public Vector2 idleOffset,runOffset,jumpUpOffset,jumpDownOffset,duckOffset,dashOffset,climbUpOffset,climbDownOffset;
+    public float idleSpeed,runSpeed,jumpUpSpeed,jumpDownSpeed,duckSpeed,dashSpeed,climbUpSpeed,climbDownSpeed;*/
 
     #region 配置
     public PlayerInput input;
@@ -103,6 +104,8 @@ public partial class PlayerEntity: MonoBehaviour
     }
     #endregion
 
+
+    //TODO Dash从地上从直接回满了
     void Update()
     {
         speed = rd.velocity;
@@ -169,11 +172,11 @@ public partial class PlayerEntity: MonoBehaviour
 
         #endregion
 
-        UpdateAnimAndTail();
-
         stateMachine.Update();
 
-        ProcessCollisionDatas();
+        OnCollisionDatas();
+
+        UpdateAnimAndTail();
 
         UpdateSprite();
             

@@ -12,7 +12,16 @@ public partial class PlayerEntity : MonoBehaviour
 
     public static class TailMove
     {
-        //public static readonly Vector2 vector2 = new Vector2(1,1);
+        public static readonly Vector2 
+            idleOffset=new Vector2(0.05f,0.04f), runOffset=new Vector2(0.1f, 0.015f), 
+            jumpUpOffset=new Vector2(0.001f, -0.1f), jumpDownOffset=new Vector2(0.001f, 0.15f), 
+            duckOffset= new Vector2(0.03f, 0.07f), dashOffset=new Vector2(-0.2f, 0), 
+            climbUpOffset=new Vector2(0.01f, -0.05f), climbDownOffset=new Vector2(0.025f, 0.08f);
+        public static readonly float 
+            idleSpeed = 0.01f, runSpeed = 0.012f,
+            jumpUpSpeed = 0.015f, jumpDownSpeed = 0.015f, 
+            duckSpeed = 0.012f, dashSpeed = 0.04f, 
+            climbUpSpeed = 0.01f, climbDownSpeed = 0.01f;
     }
 
     public static class ClimbSet

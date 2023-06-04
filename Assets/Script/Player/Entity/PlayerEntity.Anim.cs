@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System.Data.Common;
 using UnityEngine;
 
 public partial class PlayerEntity : MonoBehaviour
@@ -15,56 +16,60 @@ public partial class PlayerEntity : MonoBehaviour
     private const float AnimaRunThreshold = 3;
     #endregion
 
-    public float tailSpeed;
-
     //既然我已经写了一个动作状态机了，就没必要用Unity的动画状态机连线了
     private void UpdateAnimAndTail()
     {
-        Vector2 offset = idleOffset;
-        float ts=tailSpeed;
+        Vector2 tailOffset = TailMove.idleOffset;
+        float tailSpeed= TailMove.idleSpeed;
         switch (stateMachine.state)
         {
             case (int)State.Normal:
                 if (speed.y < 0)
                 {
                     anim.Play(JumpDown);
-                    offset = jumpDownOffset;
+                    tailOffset = TailMove.jumpDownOffset;
+                    tailSpeed = TailMove.jumpDownSpeed;
                     break;
                 }
                 else if (speed.y>0)
                 {
                     anim.Play(JumpUp);
-                    offset = jumpUpOffset;
+                    tailOffset = TailMove.jumpUpOffset;
+                    tailSpeed = TailMove.jumpUpSpeed;
                     break;
                 }
                 if (Ducking)
                 {
                     anim.Play(Duck);
-                    offset = duckOffset;
+                    tailOffset = TailMove.duckOffset;
+                    tailSpeed = TailMove.duckSpeed;
                     break;
                 }
                 if (Mathf.Abs(speed.x) > AnimaRunThreshold)
                 {
                     anim.Play(Run);
-                    offset = runOffset;
-                    //tailSpeed = 0.15f;
+                    tailOffset = TailMove.runOffset;
+                    tailSpeed = TailMove.runSpeed;
                 }
                 else
                 {
                     anim.Play(Idle);
-                    offset = idleOffset;
+                    tailOffset = TailMove.idleOffset;
+                    tailSpeed=TailMove.idleSpeed;
                 }
                 break;
             case (int)State.Dash:
                 anim.Play(Dash);
-                offset = dashOffset.x * speed.normalized * -1;
+                tailOffset = TailMove.dashOffset.x * speed.normalized;
+                tailSpeed = TailMove.dashSpeed;
                 break;
             case (int)State.Climb :
                 if (speed.y > 0)
                 {
                     anim.Play(Climb);
                     anim.SetFloat("ClimbSpeed", Mathf.Lerp(0, 1, speed.y / ClimbUpSpeed));
-                    offset = climbUpOffset;
+                    tailOffset = TailMove.climbUpOffset;
+                    tailSpeed=TailMove.climbUpSpeed;
                 }
                 else if (speed.y <= 0)//只播放一帧
                 {
@@ -72,21 +77,23 @@ public partial class PlayerEntity : MonoBehaviour
                     if (speed.y == 0)
                     {
                         anim.Play(Climb, 0, 0.4f);
-                        offset = idleOffset;
+                        tailOffset = TailMove.idleOffset;
+                        tailSpeed = TailMove.idleSpeed;
                     }
                     else
                     {
                         anim.Play(Climb, 0, 0);
-                        offset = climbDownOffset;
+                        tailOffset = TailMove.climbDownOffset;
+                        tailSpeed= TailMove.climbDownSpeed;
                     }
                     anim.SetFloat("ClimbSpeed", 0);
                 }
                 break;
         }
 
-        offset.x *= (float)facing*-1;
-
-        tail.UpdateShape(offset, ts);
+        if(stateMachine.state!=(int)State.Dash)
+            tailOffset.x *= (float)facing*-1;
+        tail.UpdateShape(tailOffset, tailSpeed);
     }
 
     private IntervalTimer flashInterval = new IntervalTimer(TimeSet.FlashInterval);

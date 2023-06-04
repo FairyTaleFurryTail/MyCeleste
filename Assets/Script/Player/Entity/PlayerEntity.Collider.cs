@@ -62,7 +62,7 @@ public partial class PlayerEntity: MonoBehaviour
             collisionYQue.Enqueue(new CollisionData(collider, normal , speed));
 
     }
-    private void ProcessCollisionDatas()
+    private void OnCollisionDatas()
     {
         CollisionData data;
         while (collisionXQue.Count > 0)
