@@ -1,6 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
 using static PlayerEntity;
+using static UnityEngine.RuleTile.TilingRuleOutput;
+
 public class NormalState : BaseState
 {
     public override State state => (int)State.Normal;
@@ -124,9 +126,9 @@ public class NormalState : BaseState
                 if(pe.wallSlideDir!=0)
                 {
                     falls = Mathf.Lerp(SpdSet.MaxFall, SpdSet.WallSlideStartMax, pe.wallSlideTimer / TimeSet.WallSlideTime);
-                    if (pe.wallSlideTimer / TimeSet.WallSlideTime > .65f)
+                    if (pe.wallSlideTimer / TimeSet.WallSlideTime > 0.65f)
                     {
-                        //特效
+                        pe.PlaySlideDust();
                     }
                 }
             }
@@ -147,32 +149,21 @@ public class NormalState : BaseState
             if (pe.jumpGraceTimer > 0)
             {
                 pe.Jump();
+                pe.PlayJumpDust();
             }
             else if (true)
             {
-                if (pe.WallJumpCheck((int)pe.facing))
-                {
-                    if (pe.dashAttackTimer > 0 && pe.dashDir.y > 0 && pe.dashDir.x == 0)
-                    {
-                        pe.SuperWallJump((int)pe.facing * -1);
-                    }
-                    else
-                    {
-                        pe.WallJump((int)pe.facing * -1);
-                    }
-                }
-                else if (pe.WallJumpCheck((int)pe.facing * -1))
-                {
-                    if (pe.dashAttackTimer > 0 && pe.dashDir.y > 0 && pe.dashDir.x == 0)
-                    {
-                        pe.SuperWallJump((int)pe.facing);
-                    }
-                    else
-                    {
-                        pe.WallJump((int)pe.facing);
-                    }
+                int wallJumpDir = pe.WallJumpCheck(1) ? -1 : pe.WallJumpCheck(-1) ? 1 : 0;
 
+                if(wallJumpDir!=0)
+                {
+                    if (pe.dashAttackTimer > 0 && pe.dashDir.y > 0 && pe.dashDir.x == 0)
+                        pe.SuperWallJump(wallJumpDir);
+                    else
+                        pe.WallJump(wallJumpDir);
+                    pe.PlayWallJumpDust(-wallJumpDir);
                 }
+
             }
         }
 

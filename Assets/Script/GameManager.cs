@@ -5,8 +5,8 @@ using UnityEngine;
 public class GameManager : SingletonMono<GameManager>
 {
     private Player player;
-    public Level level;
-    public SceneParticleManager spm;
+    [SerializeField] private Level _level;
+    [SerializeField] private SceneEffectManager _sem;
     protected override void Awake()
     {
         base.Awake();
@@ -21,5 +21,8 @@ public class GameManager : SingletonMono<GameManager>
     {
         //CoroutineManager.Instance.Update();
     }
+
+
+    public static SceneEffectManager sem { get { return Instance._sem; } }
 
 }

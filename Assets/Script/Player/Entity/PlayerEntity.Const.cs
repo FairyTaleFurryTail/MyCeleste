@@ -10,9 +10,10 @@ public partial class PlayerEntity : MonoBehaviour
         public static readonly string prefabPath = "Prefab/";
     }
 
-    public static class LenSet
+    public static class PosSet
     {
         public static readonly Vector3 foot = new Vector3(0, -0.6f,0);
+        public static readonly Vector3 front = new Vector3(0.45f , 0, 0);
     }
 
     public static class TailMove

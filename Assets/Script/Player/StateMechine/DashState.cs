@@ -26,11 +26,15 @@ public class DashState : BaseState
         returnState = state;
         pe.dashDir = pe.input_move;
         pe.dashes--;
+        pe.lastDashIndex = 1-pe.dashes;
+        pe.lastDashFacing = (float)pe.facing;
         pe.dashStartedOnGround = pe.onGround;
         pe.dashCooldownTimer = TimeSet.DashCooldown;
         if (pe.dashDir == Vector2.zero)
             pe.dashDir = new Vector2((float)pe.facing, 0);
         pe.dashAttackTimer = TimeSet.DashAttackTime;
+
+        GameManager.sem.pauseTimer = 0.05f;
     }
 
     public override State Update()
@@ -40,45 +44,31 @@ public class DashState : BaseState
             return State.Climb;
         }
 
-        if (pe.dashDir.y == 0)
+        if (pe.dashDir.y == 0)//横冲
         {
             if (pe.input.GamePlay.Jump.WasPressedThisFrame()&& pe.jumpGraceTimer > 0)
             {
                 pe.SuperJump();
+                pe.PlayJumpDust();
                 return State.Normal;
-            }
-        }
-        else if(pe.dashDir.y==1&& pe.dashDir.x==0)
-        {
-            if(pe.input.GamePlay.Jump.WasPressedThisFrame())
-            {
-                if(pe.WallJumpCheck((int)pe.facing*-1))
-                {
-                    pe.SuperWallJump((int)pe.facing);
-                    return State.Normal;
-                }
-                else if (pe.WallJumpCheck((int)pe.facing))
-                {
-                    pe.SuperWallJump((int)pe.facing * -1);
-                    return State.Normal;
-                }
             }
         }
         else
         {
             if (pe.input.GamePlay.Jump.WasPressedThisFrame())
             {
-                if (pe.WallJumpCheck((int)pe.facing * -1))
+                int wallJumpDir = pe.WallJumpCheck(1) ? -1 : pe.WallJumpCheck(-1) ? 1 : 0;
+
+                if (wallJumpDir != 0)
                 {
-                    pe.WallJump((int)pe.facing);
+                    if (pe.dashDir.y == 1 && pe.dashDir.x == 0)//上冲
+                        pe.SuperWallJump(wallJumpDir);
+                    else
+                        pe.WallJump(wallJumpDir);
+                    pe.PlayWallJumpDust(-wallJumpDir);
                     return State.Normal;
                 }
-                else if (pe.WallJumpCheck((int)pe.facing))
-                {
-                    pe.WallJump((int)pe.facing * -1);
-                    return State.Normal;
-                }
-            }
+            } 
         }
 
         return returnState;

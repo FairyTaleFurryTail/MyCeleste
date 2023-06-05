@@ -11,9 +11,6 @@ public enum Face {Left=-1,Right=1}
 
 public partial class PlayerEntity: MonoBehaviour
 {
-    /*public Vector2 idleOffset,runOffset,jumpUpOffset,jumpDownOffset,duckOffset,dashOffset,climbUpOffset,climbDownOffset;
-    public float idleSpeed,runSpeed,jumpUpSpeed,jumpDownSpeed,duckSpeed,dashSpeed,climbUpSpeed,climbDownSpeed;*/
-
     #region 配置
     public PlayerInput input;
     [HideInInspector] public Rigidbody2D rd;
@@ -22,9 +19,9 @@ public partial class PlayerEntity: MonoBehaviour
 
     [Header("设置")]
     [SerializeField] private Tail tail;
-    [SerializeField] private Effector effctor;
     [Title("动画控制"), SerializeField] private Animator anim;
     [SerializeField] private Color flashColor;
+    [SerializeField] private Color[] dashColors;
     private SpriteRenderer sprite;
     [HideInInspector]public BoxCollider2D bodyBox;
     public BoxCollider2D normalBox;
@@ -47,7 +44,8 @@ public partial class PlayerEntity: MonoBehaviour
     [HideInInspector] public int wallSlideDir;
     [HideInInspector] public bool dashStartedOnGround;
     [HideInInspector] public Vector3 scale;
-    
+    [HideInInspector] public int lastDashIndex;
+    [HideInInspector] public float lastDashFacing;
 
     //状态计算所需
     private bool _onGround;

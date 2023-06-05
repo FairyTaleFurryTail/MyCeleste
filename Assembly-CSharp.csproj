@@ -60,7 +60,6 @@
   <ItemGroup>
     <Compile Include="Assets\Script\Player\PlayerRender.cs" />
     <Compile Include="Assets\Script\Tool\Singleton.cs" />
-    <Compile Include="Assets\Script\Player\Effector.cs" />
     <Compile Include="Assets\Script\Player\Entity\PlayerEntity.Collider.cs" />
     <Compile Include="Assets\Script\Player\Entity\PlayerEntity.cs" />
     <Compile Include="Assets\Script\Level.cs" />
@@ -76,13 +75,14 @@
     <Compile Include="Assets\Script\Tool\SingletonMono.cs" />
     <Compile Include="Assets\Settings\InputSystem\PlayerInput.cs" />
     <Compile Include="Assets\Script\Player\StateMechine\BaseState.cs" />
+    <Compile Include="Assets\Script\Player\Entity\PlayerEntity.Effect.cs" />
     <Compile Include="Assets\Script\Player\Entity\PlayerEntity.Anim.cs" />
     <Compile Include="Assets\Script\Tool\IntervalTimer.cs" />
     <Compile Include="Assets\Script\Tool\Calc.cs" />
     <Compile Include="Assets\Script\MyCustom\CoroutineManager.cs" />
-    <Compile Include="Assets\Script\SceneParticleManager.cs" />
     <Compile Include="Assets\Script\Player\StateMechine\ClimbState.cs" />
     <Compile Include="Assets\Script\MyCustom\TitleAttribute.cs" />
+    <Compile Include="Assets\Script\SceneEffectManager.cs" />
     <Compile Include="Assets\Script\Player\StateMechine\ActionStateMechine.cs" />
   </ItemGroup>
   <ItemGroup>

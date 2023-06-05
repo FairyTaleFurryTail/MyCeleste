@@ -41,8 +41,11 @@ public class ClimbState : BaseState
         //处理跳跃
         if ((pe.input.GamePlay.Jump.WasPressedThisFrame()))
         {
-            if(pe.input_move.x == (int)pe.facing*-1)
+            if (pe.input_move.x == (int)pe.facing * -1)
+            {
                 pe.WallJump((int)pe.input_move.x);
+                pe.PlayWallJumpDust(-(int)pe.input_move.x);
+            }
             else
                 pe.ClimbJump();
             return State.Normal;

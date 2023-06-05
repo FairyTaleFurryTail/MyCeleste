@@ -109,6 +109,9 @@ public partial class PlayerEntity : MonoBehaviour
             sprite.color = flashColor;
         else
             sprite.color = Color.white;
+
+        if(dashAttackTimer>0.1f)PlayDashShadow();
+
     }
 
 }

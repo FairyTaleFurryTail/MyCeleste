@@ -140,7 +140,7 @@ public partial class PlayerEntity: MonoBehaviour
                 float squish = Mathf.Min(data.speed.y / SpdSet.FastMaxFall, 1);
                 scale.x = Mathf.Lerp(1, 1.6f, squish);
                 scale.y = Mathf.Lerp(1, .4f, squish);
-                effctor.DustOnLand(transform.position+ LenSet.foot);
+                GameManager.sem.PlayOnce("LandDust", transform.position + PosSet.foot);
             }
         }
         else if(data.speed.y > 0)
