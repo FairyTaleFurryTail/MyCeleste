@@ -61,10 +61,14 @@ public partial class PlayerEntity: MonoBehaviour
     [HideInInspector] public float dashAttackTimer;
     [HideInInspector] public float dashCooldownTimer;
     [HideInInspector] public float wallSlideTimer;
+
+    private float launchTimer;
     #endregion
 
     [Header("输入")]
     [HideInInspector] public Vector2 input_move;
+
+    public float ss;
 
     #region 初始化函数
     private void Awake()

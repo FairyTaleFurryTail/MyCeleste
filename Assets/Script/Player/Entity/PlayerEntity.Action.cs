@@ -29,6 +29,8 @@ public partial class PlayerEntity: MonoBehaviour
         speed.x = SuperJumpX * (int)facing;
         speed.y = JumpSpeed;
 
+        launchTimer = TimeSet.launchTime;
+
         if (Ducking)
         {
             Ducking = false;
@@ -73,6 +75,9 @@ public partial class PlayerEntity: MonoBehaviour
         dashAttackTimer = 0;
         speed.x = SuperWallJumpX * dir;
         speed.y = SuperWallJumpSpeed;
+
+        launchTimer = TimeSet.launchTime;
+
         if (input_move.x != 0)
         {
             forceMoveX = dir;

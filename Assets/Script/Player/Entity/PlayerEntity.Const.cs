@@ -66,6 +66,8 @@ public partial class PlayerEntity : MonoBehaviour
         public const float ClimbAccel = 90;
         public const float ClimbUpSpeed = 4.5f;
         public const float ClimbDownSpeed = -8;
+
+        public const float MinLaunchSpeed = 180;
     }
 
     public static class TimeSet
@@ -86,6 +88,8 @@ public partial class PlayerEntity : MonoBehaviour
         public const float DashCooldown = 0.2f;
 
         public const float FlashInterval = 0.05f;
+
+        public const float launchTime = 1f;
     }
 
 }

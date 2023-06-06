@@ -4,6 +4,7 @@ using UnityEngine;
 
 public partial class PlayerEntity : MonoBehaviour
 {
+
     #region Animations' name & Setting
     private const string JumpDown=nameof(JumpDown);
     private const string JumpUp = nameof(JumpUp);
@@ -111,6 +112,15 @@ public partial class PlayerEntity : MonoBehaviour
             sprite.color = Color.white;
 
         if(dashAttackTimer>0.1f)PlayDashShadow();
+
+        if (launchTimer>0)
+        {
+            if (speed.sqrMagnitude < SpdSet.MinLaunchSpeed)
+                launchTimer = 0;
+            else
+                PlaySpeedRing();
+        }
+        launchTimer.TimePassBy();
 
     }
 

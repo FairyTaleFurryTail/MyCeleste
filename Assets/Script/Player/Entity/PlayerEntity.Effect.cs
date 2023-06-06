@@ -10,8 +10,18 @@ public partial class PlayerEntity : MonoBehaviour
     public void PlaySlideDust() { GameManager.sem.PlayKeep("SlideDust", (float)facing * PosSet.front + transform.position); }
     public void PlayDashShadow()
     {
-        ParticleSystem ps = GameManager.sem.PlayKeep("DashShadow", transform.position, scale: new Vector3(lastDashFacing, 1, 1));
+        /*ParticleSystem ps = GameManager.sem.PlayKeep("DashShadow", transform.position, scale: new Vector3(lastDashFacing, 1, 1));
         //ps.GetComponent<ParticleSystemRenderer>().material.mainTexture = anim.GetComponent<SpriteRenderer>().sprite.texture;
-        ps.startColor = dashColors[lastDashIndex];
+        ps.startColor = dashColors[lastDashIndex];*/
     }
+
+    private void PlaySpeedRing()
+    {
+        ParticleSystem ps = GameManager.sem.PlayKeep("SpeedRing", transform.position, speed.normalized);
+        Vector2 dir = speed.normalized;
+        if (dir.y < 0) dir *= -1;
+        float angle = Vector2.Angle(Vector2.right, dir) * Mathf.PI / 180;
+        ps.startRotation = angle;
+    }
+        
 }
