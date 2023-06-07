@@ -33,7 +33,9 @@ public class DashState : BaseState
         if (pe.dashDir == Vector2.zero)
             pe.dashDir = new Vector2((float)pe.facing, 0);
         pe.dashAttackTimer = TimeSet.DashAttackTime;
+        pe.dashEffectTimer = TimeSet.DashEffectTime;
 
+        GameManager.sem.dashEffect.ResetInterval();
         GameManager.sem.pauseTimer = 0.05f;
     }
 

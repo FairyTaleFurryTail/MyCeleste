@@ -292,7 +292,6 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5609864911708140933}
-  - component: {fileID: 3901763629411133877}
   m_Layer: 0
   m_Name: Sprite
   m_TagString: Untagged
@@ -317,18 +316,6 @@ Transform:
   m_Father: {fileID: 2114818799987327095}
   m_RootOrder: -1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3901763629411133877
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2373217926560513170}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: a9f17c7583d8c744b9ce6a6870523554, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2607871481981375059
 GameObject:
   m_ObjectHideFlags: 0
@@ -649,7 +636,7 @@ GameObject:
   - component: {fileID: 6249118424222791968}
   - component: {fileID: 6474795559398078213}
   m_Layer: 0
-  m_Name: Root
+  m_Name: Tail
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -690,7 +677,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 23ce5d294b0b95647a3fe3c7f0a31e82, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  transColors: []
+  dashColors:
+  - {r: 0.9716981, g: 0.3428444, b: 0.89547527, a: 1}
+  - {r: 0.99599594, g: 0.72075474, b: 1, a: 1}
+  - {r: 0.51320755, g: 0.56751484, b: 1, a: 1}
+  - {r: 0.71132076, g: 0.9498427, b: 1, a: 1}
+  colorSplit: 4
   growUpSpeed: 0.01
 --- !u!1 &6596439428486060282
 GameObject:
@@ -1229,6 +1221,7 @@ MonoBehaviour:
   dashStartedOnGround: 0
   scale: {x: 1, y: 1, z: 1}
   lastDashIndex: 0
+  lastDashFacing: 0
   Stamina: 110
   varJumpTimer: -0.000011581229
   jumpGraceTimer: 0.1
@@ -1236,6 +1229,7 @@ MonoBehaviour:
   dashAttackTimer: -0.0005611649
   dashCooldownTimer: -0.0010859917
   wallSlideTimer: 1.5
+  dashEffectTimer: 0
   input_move: {x: 0, y: 0}
   MaxRun: 9
   RunReduce: 50

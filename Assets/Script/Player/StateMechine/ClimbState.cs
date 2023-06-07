@@ -79,6 +79,7 @@ public class ClimbState : BaseState
                 if(!pe.onGround)
                 {
                     target = pe.ClimbDownSpeed;
+                    pe.PlaySlideDust();
                 }
             }
         }

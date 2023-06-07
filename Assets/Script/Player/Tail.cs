@@ -5,10 +5,11 @@ using UnityEngine;
 public class Tail : MonoBehaviour
 {
     private Transform tailRoot;
-    [SerializeField] private List<Color> transColors;
+    [SerializeField] private List<Color> dashColors;
     private LinkedList<Transform> tails=new LinkedList<Transform>();
     private List<Color>originColors = new List<Color>();
     private List<SpriteRenderer> sprites = new List<SpriteRenderer>();
+    [SerializeField] private int colorSplit;
     private void Awake()
     {
         tailRoot = GetComponent<Transform>();
@@ -17,7 +18,8 @@ public class Tail : MonoBehaviour
             tails.AddLast(t);
             SpriteRenderer sprite = t.GetComponent<SpriteRenderer>();
             sprites.Add(sprite);
-            originColors.Add(sprite.color);
+            if(!originColors.Contains(sprite.color))
+                originColors.Add(sprite.color);
         }
         originRootPosX = tails.First.Value.localPosition.x;
     }
@@ -48,6 +50,25 @@ public class Tail : MonoBehaviour
                 tail.position = Vector2.MoveTowards((Vector2)tail.position, targetPos, speed);
                 nodeToFollow = nodeToFollow.Next;
             }
+    }
+
+    public void UpdateColor(int index)
+    {
+        Color c1, c2;
+        if(index<0)
+        {
+            c1 = originColors[0];
+            c2 = originColors[1];
+        }
+        else
+        {
+            c1 = dashColors[index];
+            c2 = dashColors[index + 1];
+        }
+        for(int i=0;i< colorSplit;i++)
+            sprites[i].color = c1;
+        for(int i=colorSplit;i<sprites.Count;i++)
+            sprites[i].color = c2;
     }
 
 }

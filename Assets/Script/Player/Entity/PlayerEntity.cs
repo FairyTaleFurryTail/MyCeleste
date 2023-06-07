@@ -63,12 +63,11 @@ public partial class PlayerEntity: MonoBehaviour
     [HideInInspector] public float wallSlideTimer;
 
     private float launchTimer;
+    public float dashEffectTimer;
     #endregion
 
     [Header("输入")]
     [HideInInspector] public Vector2 input_move;
-
-    public float ss;
 
     #region 初始化函数
     private void Awake()
@@ -120,7 +119,7 @@ public partial class PlayerEntity: MonoBehaviour
         input_move.y = input_move.y > 0 ? 1 : input_move.y < 0 ? -1 : 0;
 
         //变量计算
-        onGround = CastCheckCollider(Vector2.zero,Vector2.down);
+        onGround = (!((stateMachine.state==(int)State.Dash)&&(speed.y>0)))&&CastCheckCollider(Vector2.zero,Vector2.down);
 
         #region 各种计时器
         varJumpTimer.TimePassBy();

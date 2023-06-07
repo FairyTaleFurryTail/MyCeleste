@@ -103,8 +103,8 @@ public class NormalState : BaseState
             if(pe.speed.y<=half)
             {
                 float spriteLerp = Mathf.Min(1, (pe.speed.y - half) / (fmf - half));
-                pe.scale.x = Mathf.Lerp(1f, 0.5f, spriteLerp);
-                pe.scale.y = Mathf.Lerp(1f, 1.5f, spriteLerp);
+                pe.scale.x = Mathf.Lerp(1f, 0.7f, spriteLerp);
+                pe.scale.y = Mathf.Lerp(1f, 1.3f, spriteLerp);
             }
         }
         else

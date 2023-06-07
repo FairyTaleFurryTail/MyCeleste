@@ -888,6 +888,10 @@
       <Project>{197E32EC-ACBA-DDF8-A45F-EEF7174472EC}</Project>
       <Name>Unity.2D.IK.Runtime</Name>
     </ProjectReference>
+    <ProjectReference Include="com.unity.cinemachine.editor.csproj">
+      <Project>{4F58A5D1-80D2-5EBC-DCED-E0C9E22EAD35}</Project>
+      <Name>com.unity.cinemachine.editor</Name>
+    </ProjectReference>
     <ProjectReference Include="Unity.Burst.Editor.csproj">
       <Project>{A2669C1D-E2F7-99D8-EC89-A52889442926}</Project>
       <Name>Unity.Burst.Editor</Name>
@@ -1027,6 +1031,10 @@
     <ProjectReference Include="Unity.VisualScripting.State.csproj">
       <Project>{8015DD1C-6A6A-E4BA-8081-492C4B3CA51F}</Project>
       <Name>Unity.VisualScripting.State</Name>
+    </ProjectReference>
+    <ProjectReference Include="Cinemachine.csproj">
+      <Project>{AC750DAD-2707-41C6-1058-DDB481EAF887}</Project>
+      <Name>Cinemachine</Name>
     </ProjectReference>
     <ProjectReference Include="Unity.2D.SpriteShape.Editor.csproj">
       <Project>{872270C3-33FB-C794-2E7A-E833C77A6816}</Project>

@@ -22,6 +22,7 @@ public partial class PlayerEntity : MonoBehaviour
     {
         Vector2 tailOffset = TailMove.idleOffset;
         float tailSpeed= TailMove.idleSpeed;
+        int tailColorIndex=(dashes-1)*-2;
         switch (stateMachine.state)
         {
             case (int)State.Normal:
@@ -95,6 +96,7 @@ public partial class PlayerEntity : MonoBehaviour
         if(stateMachine.state!=(int)State.Dash)
             tailOffset.x *= (float)facing*-1;
         tail.UpdateShape(tailOffset, tailSpeed);
+        tail.UpdateColor(tailColorIndex);
     }
 
     private IntervalTimer flashInterval = new IntervalTimer(TimeSet.FlashInterval);
@@ -111,7 +113,18 @@ public partial class PlayerEntity : MonoBehaviour
         else
             sprite.color = Color.white;
 
-        if(dashAttackTimer>0.1f)PlayDashShadow();
+        if (dashEffectTimer > 0)
+        {
+            if (speed.magnitude < DashSpeed / 3)
+                launchTimer = 0;
+            else
+                PlayDashShadow();
+            if(speed.magnitude <= DashSpeed)
+                dashEffectTimer.TimePassBy();
+        }
+
+        if (dashAttackTimer > 0.05f)
+            GameManager.sem.PlayKeep("DashParticle", transform.position);
 
         if (launchTimer>0)
         {

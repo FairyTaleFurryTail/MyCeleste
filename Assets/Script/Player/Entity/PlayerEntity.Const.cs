@@ -10,6 +10,7 @@ public partial class PlayerEntity : MonoBehaviour
         public static readonly string prefabPath = "Prefab/";
     }
 
+
     public static class PosSet
     {
         public static readonly Vector3 foot = new Vector3(0, -0.6f,0);
@@ -84,6 +85,7 @@ public partial class PlayerEntity : MonoBehaviour
         public const float WallSlideTime = 1.5f;
 
         public const float DashAttackTime=0.3f;
+        public const float DashEffectTime=0.2f;
         public const float DashTime = .15f;
         public const float DashCooldown = 0.2f;
 

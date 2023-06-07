@@ -132,7 +132,7 @@ public partial class PlayerEntity: MonoBehaviour
                 Ducking = true;
                 dashDir.y = 0;
                 speed.y = 0;
-                speed.x = data.speed.x * SpdSet.DodgeSlideSpeedMult;
+                speed.x = data.speed.x * SpdSet.DodgeSlideSpeedMult;//模拟y轴速度转换为x轴速度，凌波微步会用到这个加成
             }
 
             if (stateMachine.state != (int)State.Climb)

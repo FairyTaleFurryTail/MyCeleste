@@ -8,12 +8,15 @@ public class SceneEffectManager : MonoBehaviour
 {
     [SerializeField] private Transform OnceFolder;
     [SerializeField] private Transform KeepFolder;
+    [SerializeField] private Transform TempFolder;
     private float _pauseTimer;
 
+    public DashEffectCreator dashEffect=new DashEffectCreator();
     private Dictionary<string, ParticleSystem> OnceDic = new Dictionary<string, ParticleSystem>();
     private Dictionary<string, KeepEntity> KeepDic = new Dictionary<string, KeepEntity>();
     private void Awake()
     {
+        dashEffect.SetInstantiateFolder(TempFolder);
         foreach(var a in OnceFolder.GetComponentsInChildren<ParticleSystem>())
             OnceDic.Add(a.name, a);
         foreach (var a in KeepFolder.GetComponentsInChildren<ParticleSystem>())
@@ -29,10 +32,12 @@ public class SceneEffectManager : MonoBehaviour
     {
         foreach(var a in KeepDic)
         {
+            a.Value.time.TimePassBy();
             if (a.Value.time > 0)
-                a.Value.time-= Time.deltaTime;
+                a.Value.time -= Time.deltaTime;
             else
-                a.Value.effect.gameObject.SetActive(false);
+                a.Value.effect.Stop();
+                //a.Value.effect.gameObject.SetActive(false);
         }
     }
 
@@ -59,7 +64,8 @@ public class SceneEffectManager : MonoBehaviour
             ps.effect.transform.position= position;
             ps.effect.transform.rotation = Quaternion.Euler(rotation.Value);
             ps.effect.transform.localScale = scale.Value;
-            ps.effect.gameObject.SetActive(true);
+            //ps.effect.gameObject.SetActive(true);
+            //ps.effect.Stop();
             if (!ps.effect.isPlaying) ps.effect.Play();
             return ps.effect;
         }
@@ -81,4 +87,40 @@ public class KeepEntity
         this.effect = effect;
         time = 0;
     }
+}
+
+[Serializable]
+public class DashEffectCreator
+{
+    private Transform InstantiateFolder;
+    public void SetInstantiateFolder(Transform t)=> InstantiateFolder = t;
+
+    private DashEffect _dashPrefab;
+    private DashEffect dashPrefab 
+    { get { if (_dashPrefab == null) _dashPrefab = Resources.Load<DashEffect>("Effect/DashEffect");return _dashPrefab; } }
+
+    public float interval;
+    private float curInterval;
+    public float shadowLifetime = 0.3f;
+
+    public void ResetInterval()
+    {
+        curInterval = 0;
+    }
+
+    public bool CanCreate()
+    {
+        if (curInterval <= 0 && InstantiateFolder != null)
+            return true;
+        curInterval.TimePassBy();
+        return false;
+    }
+
+    public void Create( Sprite sp, int facing,Color color,Vector3 pos, Vector3 scale)
+    {
+        DashEffect dash = GameObject.Instantiate(dashPrefab, pos ,Quaternion.identity, InstantiateFolder);
+        dash.Init(shadowLifetime, sp, facing, scale,color);
+        curInterval = interval;
+    }
+
 }

@@ -11,9 +11,10 @@ public enum MyEnum
 public static class Calc
 {
 
-    public static void TimePassBy(ref this float w)
+    public static void TimePassBy(ref this float w,bool unscaled=false)
     {
-        if (w > 0) w -= Time.deltaTime;
+        float timePass = unscaled ? Time.unscaledDeltaTime : Time.deltaTime;
+        if (w > 0) w -= timePass;
     }
 
     public static Vector2 GetContanctDirection(this Collider2D collider)
