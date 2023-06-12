@@ -10,6 +10,7 @@ public class Tail : MonoBehaviour
     private List<Color>originColors = new List<Color>();
     private List<SpriteRenderer> sprites = new List<SpriteRenderer>();
     [SerializeField] private int colorSplit;
+    [SerializeField] private float intensity;
     private void Awake()
     {
         tailRoot = GetComponent<Transform>();
@@ -55,7 +56,10 @@ public class Tail : MonoBehaviour
     public void UpdateColor(int index)
     {
         Color c1, c2;
-        if(index<0)
+        Color lc1,lc2;
+        lc1 = lc2 = Color.white;
+        //bool light = false;
+        if (index<0)
         {
             c1 = originColors[0];
             c2 = originColors[1];
@@ -64,11 +68,21 @@ public class Tail : MonoBehaviour
         {
             c1 = dashColors[index];
             c2 = dashColors[index + 1];
+            lc1 = Calc.GetLightColor(c1, intensity);
+            lc2 = Calc.GetLightColor(c2, intensity);
+            //light = true;
         }
-        for(int i=0;i< colorSplit;i++)
+        for (int i = 0; i < colorSplit; i++)
+        {
             sprites[i].color = c1;
-        for(int i=colorSplit;i<sprites.Count;i++)
+            sprites[i].material.SetColor("_Color", lc1);
+        }
+        for (int i = colorSplit; i < sprites.Count; i++)
+        {
             sprites[i].color = c2;
+            sprites[i].material.SetColor("_Color", lc2);
+        }
+            
     }
 
 }

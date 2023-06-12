@@ -10,6 +10,11 @@ public enum MyEnum
 }
 public static class Calc
 {
+    public static Color GetLightColor (Color c1,float intensity)
+    {
+        float factor = Mathf.Pow(2, intensity);
+        return new Color(c1.r * factor, c1.g * factor, c1.b * factor);
+    }
 
     public static void TimePassBy(ref this float w,bool unscaled=false)
     {

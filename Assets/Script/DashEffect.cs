@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Security.Cryptography;
 using UnityEngine;
 
 public class DashEffect : MonoBehaviour
@@ -7,6 +8,7 @@ public class DashEffect : MonoBehaviour
     private float curTime;
     private float maxTime;
     [SerializeField]private SpriteRenderer sprite;
+    [SerializeField] private float intensity;
 
     public void Init(float time,Sprite sp,int facing,Vector3 scale,Color color)
     {
@@ -15,6 +17,7 @@ public class DashEffect : MonoBehaviour
         sprite.color = color;
         scale.x *= facing;
         transform.localScale = scale;
+        sprite.material.SetColor("_Color", Calc.GetLightColor(color, intensity));
     }
 
 
