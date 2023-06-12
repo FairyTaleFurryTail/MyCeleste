@@ -142,7 +142,7 @@ public partial class PlayerEntity: MonoBehaviour
     #region Climb
     public void ClimbHop()
     {
-        climbHopSolid = CheckCollider(bodyBox, Vector2.right * (int)facing);
+        climbHopSolid = CheckCollider(Position,bodyBox, Vector2.right * (int)facing);
         if(climbHopSolid != null )
         {
             hopWaitX = (int)facing;

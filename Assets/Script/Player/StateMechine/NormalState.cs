@@ -118,7 +118,7 @@ public class NormalState : BaseState
             //计算滑墙
             if(pe.input_move.x*(int)pe.facing>0)
             {
-                if(pe.speed.y<=0&&pe.wallSlideTimer>0 && pe.CheckCollider(pe.bodyBox,Vector2.right*(int)pe.facing))
+                if(pe.speed.y<=0&&pe.wallSlideTimer>0 && pe.CheckCollider(pe.Position,pe.bodyBox,Vector2.right*(int)pe.facing))
                 {
                     pe.Ducking = false;
                     pe.wallSlideDir = (int)pe.facing;

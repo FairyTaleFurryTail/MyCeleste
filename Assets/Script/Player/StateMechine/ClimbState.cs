@@ -55,7 +55,7 @@ public class ClimbState : BaseState
         if (!pe.input.GamePlay.Climb.IsPressed())
             return State.Normal;
 
-        if(!pe.CheckCollider(pe.bodyBox,(int)pe.facing*Vector2.right))
+        if(!pe.CheckCollider(pe.Position,pe.bodyBox,(int)pe.facing*Vector2.right))
         {
             if(pe.speed.y>=0)
             {

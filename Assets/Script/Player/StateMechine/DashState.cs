@@ -21,6 +21,7 @@ public class DashState : BaseState
     }
 
     private State returnState;
+    
     public override void OnEnter()
     {
         returnState = state;
@@ -35,8 +36,10 @@ public class DashState : BaseState
         pe.dashAttackTimer = TimeSet.DashAttackTime;
         pe.dashEffectTimer = TimeSet.DashEffectTime;
 
+        spdDir = pe.dashDir.normalized;
         GameManager.sem.dashEffect.ResetInterval();
         GameManager.sem.pauseTimer = 0.05f;
+        GameManager.sem.CameraShake(5, 3, 0.1f,spdDir.x*12,spdDir.y*12);
     }
 
     public override State Update()
@@ -48,8 +51,9 @@ public class DashState : BaseState
 
         if (pe.dashDir.y == 0)//横冲
         {
-            if (pe.input.GamePlay.Jump.WasPressedThisFrame()&& pe.jumpGraceTimer > 0)
+            if (pe.input.GamePlay.Jump.IsPressed()&& pe.jumpGraceTimer > 0)
             {
+                Debug.Log(pe.jumpGraceTimer);
                 pe.SuperJump();
                 pe.PlayJumpDust();
                 return State.Normal;
@@ -75,11 +79,10 @@ public class DashState : BaseState
 
         return returnState;
     }
+    Vector2 spdDir;
     public override IEnumerator Coroutine()
     {
-        Vector2 spdDir = pe.dashDir.normalized;
         Vector2 newSpeed = spdDir * pe.DashSpeed;
-
         if(spdDir.x==Mathf.Sign(pe.speed.x)&& Mathf.Abs(newSpeed.x)< Mathf.Abs(pe.speed.x))
             newSpeed.x=pe.speed.x;
         pe.speed=newSpeed;

@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -9,13 +10,17 @@ public class SceneEffectManager : MonoBehaviour
     [SerializeField] private Transform OnceFolder;
     [SerializeField] private Transform KeepFolder;
     [SerializeField] private Transform TempFolder;
+    [SerializeField] private CinemachineVirtualCamera virtualCamera;
+    private CinemachineBasicMultiChannelPerlin noise;
+    
     private float _pauseTimer;
-
+    private float _cameraShakeTimer;
     public DashEffectCreator dashEffect=new DashEffectCreator();
     private Dictionary<string, ParticleSystem> OnceDic = new Dictionary<string, ParticleSystem>();
     private Dictionary<string, KeepEntity> KeepDic = new Dictionary<string, KeepEntity>();
     private void Awake()
     {
+        noise= virtualCamera.GetCinemachineComponent<CinemachineBasicMultiChannelPerlin>();
         dashEffect.SetInstantiateFolder(TempFolder);
         foreach(var a in OnceFolder.GetComponentsInChildren<ParticleSystem>())
             OnceDic.Add(a.name, a);
@@ -26,6 +31,7 @@ public class SceneEffectManager : MonoBehaviour
     private void Update()
     {
         if (pauseTimer > 0) pauseTimer -= Time.unscaledDeltaTime;
+        if (cameraShakeTimer > 0) cameraShakeTimer -= Time.unscaledDeltaTime;
     }
 
     private void LateUpdate()
@@ -72,8 +78,19 @@ public class SceneEffectManager : MonoBehaviour
         return null;
     }
 
+    public void CameraShake(float amplitude,float frequency,float time,float x=0,float z=0)
+    {
+        cameraShakeTimer = time;
+        noise.m_AmplitudeGain = amplitude;
+        noise.m_FrequencyGain = frequency;
+        noise.m_PivotOffset.x = x;
+        noise.m_PivotOffset.z = z;
+    }
+
     public float pauseTimer
     { set { _pauseTimer = value; Time.timeScale = value > 0 ? 0 : 1; } get { return _pauseTimer; } }
+    private float cameraShakeTimer
+    { set { _cameraShakeTimer = value; if (_cameraShakeTimer <= 0) { noise.m_AmplitudeGain = 0;noise.m_FrequencyGain = 0; } } get { return _cameraShakeTimer; }}
 
 }
 

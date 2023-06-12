@@ -6,7 +6,7 @@ public partial class PlayerEntity : MonoBehaviour
 {
     public void PlayJumpDust()=> GameManager.sem.PlayOnce("JumpDust", PosSet.foot+transform.position);
     public void PlayWallJumpDust(float dir) =>
-        GameManager.sem.PlayOnce("JumpDust",PosSet.foot+transform.position,new Vector3(0, dir * 90, 0));
+        GameManager.sem.PlayOnce("JumpDust",PosSet.foot+transform.position+Vector3.up*0.5f,new Vector3(0, dir * 90, 0));
     public void PlaySlideDust() { GameManager.sem.PlayKeep("SlideDust", (float)facing * PosSet.front + transform.position); }
     public void PlayDashShadow()
     {

@@ -44,7 +44,7 @@ public partial class PlayerEntity : MonoBehaviour
     {
         public const float WallJumpCheckDist = .6f;
         public const float OffsetDistance = 0.02f;
-        public const int DashCornerCorrection = 4;
+        public const int DashCornerCorrection = 5;
         public const float CorrectXStep = 0.12f;
         public const float CorrectYStep = 0.09f;
     }

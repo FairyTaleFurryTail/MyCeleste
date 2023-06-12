@@ -55,7 +55,8 @@ public partial class PlayerEntity: MonoBehaviour
     #region 计时器
     [HideInInspector] public float varJumpTimer;
     /// <summary>土狼时间</summary>
-    [HideInInspector] public float jumpGraceTimer;
+    //[HideInInspector] 
+    public float jumpGraceTimer;
     [HideInInspector] public float forceMoveXTimer;
 
     [HideInInspector] public float dashAttackTimer;
@@ -63,7 +64,7 @@ public partial class PlayerEntity: MonoBehaviour
     [HideInInspector] public float wallSlideTimer;
 
     private float launchTimer;
-    public float dashEffectTimer;
+    [HideInInspector]public float dashEffectTimer;
     #endregion
 
     [Header("输入")]
@@ -119,7 +120,8 @@ public partial class PlayerEntity: MonoBehaviour
         input_move.y = input_move.y > 0 ? 1 : input_move.y < 0 ? -1 : 0;
 
         //变量计算
-        onGround = (!((stateMachine.state==(int)State.Dash)&&(speed.y>0)))&&CastCheckCollider(Vector2.zero,Vector2.down);
+        onGround = (!(stateMachine.state==(int)State.Dash&&speed.y>0))&&CastCheckCollider(Vector2.zero,Vector2.down);
+        //onGround = CastCheckCollider(Vector2.zero, Vector2.down);
 
         #region 各种计时器
         varJumpTimer.TimePassBy();
@@ -166,7 +168,7 @@ public partial class PlayerEntity: MonoBehaviour
         {
             if (speed.x * hopWaitX < 0)
                 hopWaitX = 0;
-            if (!CheckCollider(bodyBox, Vector2.right * (int)facing))
+            if (!CheckCollider(Position, bodyBox, Vector2.right * (int)facing))
             {
                 speed += hopWaitX * hopWaitXSpeed * Vector2.right;
                 hopWaitX = 0;
