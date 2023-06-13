@@ -56,8 +56,7 @@ public partial class PlayerEntity: MonoBehaviour
     #region 计时器
     [HideInInspector] public float varJumpTimer;
     /// <summary>土狼时间</summary>
-    //[HideInInspector] 
-    public float jumpGraceTimer;
+    [HideInInspector] public float jumpGraceTimer;
     [HideInInspector] public float forceMoveXTimer;
 
     [HideInInspector] public float dashAttackTimer;
@@ -67,7 +66,7 @@ public partial class PlayerEntity: MonoBehaviour
     private float launchTimer;
     [HideInInspector]public float dashEffectTimer;
 
-    public float deadTimer;
+    [HideInInspector] public float deadTimer;
     #endregion
 
     [Header("输入")]
@@ -113,8 +112,6 @@ public partial class PlayerEntity: MonoBehaviour
     }
     #endregion
 
-
-    //TODO Dash从地上从直接回满了
     void Update()
     {
         speed = rd.velocity;
@@ -205,31 +202,5 @@ public partial class PlayerEntity: MonoBehaviour
                 Dead();
         }
     }
-
-
-    #region 常量
-    [Header("常量")]
-    public float MaxRun;
-    public float RunReduce;
-    public float RunAccel;
-    public float Gravity = 90f;
-    //跳跃
-    public float JumpSpeed;
-    public float JumpXBoost = 5f;
-    public float SuperWallJumpX { get { return MaxRun + JumpXBoost * 2; } }
-    public float SuperWallJumpSpeed = 20f;
-    public float SuperJumpX = 260 / 10f;
-    public float WallJumpXBoost = 16.125f; //MaxRun+JumpHBoost
-    public float ClimbUpSpeed = 45/8f;
-    public float ClimbDownSpeed = -10f;
-    public float ClimbGrapReduce = 100;
-    public float climbButtonTime = .1f;
-    public const float DuckSuperJumpXMult = 1.25f;
-    public const float DuckSuperJumpYMult = 1.25f;
-
-    //冲刺
-    public float DashSpeed = 30f;
-    public float EndDashSpeed = 20f;
-    #endregion
 
 }

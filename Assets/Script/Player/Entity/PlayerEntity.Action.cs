@@ -8,54 +8,48 @@ using static PlayerEntity;
 public partial class PlayerEntity: MonoBehaviour
 {
     #region Jump
-
-    public void Jump()
+    public void JumpReset()
     {
-        varJumpTimer = TimeSet.VarJumpTime;
+        varJumpTimer = TimeSet.SuperWallJumpVarTime;
         wallSlideTimer = TimeSet.WallSlideTime;
         jumpGraceTimer = 0;
         dashAttackTimer = 0;
-        speed.x += JumpXBoost * input_move.x;
-        speed.y = JumpSpeed;
+        scale = new Vector2( 0.6f, 1.4f);
+    }
+
+    public void Jump()
+    {
+        JumpReset();
+        speed.x += SpdSet.JumpXBoost * input_move.x;
+        speed.y = SpdSet.JumpSpeed;
         varJumpSpeed = speed.y;
+        PlayJumpDust();
     }
 
     public void SuperJump()
     {
-        varJumpTimer = TimeSet.VarJumpTime;
-        wallSlideTimer = TimeSet.WallSlideTime;
-        jumpGraceTimer = 0;
-        dashAttackTimer = 0;
-        speed.x = SuperJumpX * (int)facing;
-        speed.y = JumpSpeed;
+        JumpReset();
+        speed.x = SpdSet.SuperJumpX * (int)facing;
+        speed.y = SpdSet.JumpSpeed;
 
         launchTimer = TimeSet.launchTime;
 
         if (Ducking)
         {
             Ducking = false;
-            speed.x *= DuckSuperJumpXMult;
-            speed.y *= DuckSuperJumpYMult;
-            //特效1
+            speed.x *= SpdSet.DuckSuperJumpXMult;
+            speed.y *= SpdSet.DuckSuperJumpYMult;
         }
-        else
-        {
-            ;
-            //特效2
-        }
-
+        PlayJumpDust();
         varJumpSpeed = speed.y;
     }
 
     public void WallJump(int dir)
     {
         Ducking = false;
-        varJumpTimer = TimeSet.VarJumpTime;
-        wallSlideTimer = TimeSet.WallSlideTime;
-        jumpGraceTimer = 0;
-        dashAttackTimer = 0;
-        speed.x = WallJumpXBoost * dir;
-        speed.y = JumpSpeed;
+        JumpReset();
+        speed.x = SpdSet.WallJumpXBoost * dir;
+        speed.y = SpdSet.JumpSpeed;
         if (input_move.x != 0)
         {
             forceMoveX = dir;
@@ -63,18 +57,13 @@ public partial class PlayerEntity: MonoBehaviour
         }
         
         varJumpSpeed = speed.y;
-        
-        
     }
     public void SuperWallJump(int dir)
     {
         Ducking = false;
-        varJumpTimer = TimeSet.SuperWallJumpVarTime;
-        wallSlideTimer = TimeSet.WallSlideTime;
-        jumpGraceTimer = 0;
-        dashAttackTimer = 0;
-        speed.x = SuperWallJumpX * dir;
-        speed.y = SuperWallJumpSpeed;
+        JumpReset();
+        speed.x = SpdSet.SuperWallJumpX * dir;
+        speed.y = SpdSet.SuperWallJumpSpeed;
 
         launchTimer = TimeSet.launchTime;
 

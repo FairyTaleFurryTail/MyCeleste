@@ -19,7 +19,7 @@ public class GameManager : SingletonMono<GameManager>
 
     private void Start()
     {
-        NewPlayer(level.responPoint.position);
+        NewPlayer(level.curPoint.position);
     }
     private void Update()
     {
@@ -38,6 +38,6 @@ public class GameManager : SingletonMono<GameManager>
     public void Respawn()
     {
         StartCoroutine(cm.SwitchScreen());
-        NewPlayer(level.responPoint.position);
+        NewPlayer(level.curPoint.position);
     }
 }

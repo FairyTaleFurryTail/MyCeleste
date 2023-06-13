@@ -9,29 +9,20 @@ public class NormalState : BaseState
 
     public override bool haveCoroutine => false;
 
-    public NormalState(PlayerEntity p):base(p)
-    {
-
-    }
+    public NormalState(PlayerEntity p):base(p){}
 
     public override IEnumerator Coroutine()
     {
         yield return null;
     }
 
-    public override void OnEnd()
-    {
-        
-    }
-
-    public override void OnEnter()
-    {
-        
-    }
+    public override void OnEnd(){}
+    public override void OnEnter(){}
 
     public override State Update()
     {
-        {//爬墙
+        {
+            //爬墙
             if (pe.input.GamePlay.Climb.IsPressed() &!pe.IsTired&&!pe.Ducking)
             {
                 //为了爬跳不会卡住，要往下落才能爬（我本来以为要个禁止爬墙计时器的，结果居然是这样- -）
@@ -58,13 +49,13 @@ public class NormalState : BaseState
                     if (pe.CanUnDuck)
                     {
                         pe.Ducking= false;
-                        //scale
+                        pe.scale = new Vector2(.8f, 1.2f);
                     }
                 }
             }
             else if (pe.onGround && pe.input_move.y < 0 && pe.speed.y <= 0)
             {
-                //scale
+                pe.scale = new Vector2(1.4f, 0.6f);
                 pe.Ducking = true;
             }
 
@@ -78,13 +69,13 @@ public class NormalState : BaseState
         else
         {
             float mult = pe.onGround ? 1 : SpdSet.AirMult;
-            float max = pe.MaxRun;
+            float max = SpdSet.MaxRun;
             float moveX = pe.input_move.x;
             
-            float acc = pe.RunAccel;
+            float acc = SpdSet.RunAccel;
             //可能会速度过快
             if (Mathf.Abs(pe.speed.x) > max && Mathf.Sign(pe.speed.x) == moveX)
-                acc= pe.RunReduce;
+                acc= SpdSet.RunReduce;
 
             pe.speed.x = Mathf.MoveTowards(pe.speed.x, max * moveX, acc * mult * Time.deltaTime);
         }
@@ -132,8 +123,9 @@ public class NormalState : BaseState
                     }
                 }
             }
-            pe.speed.y = Mathf.MoveTowards(pe.speed.y, falls, pe.Gravity * Time.deltaTime);
+            pe.speed.y = Mathf.MoveTowards(pe.speed.y, falls, SpdSet.Gravity * Time.deltaTime);
         }
+        else pe.speed.y = 0;
 
         if (pe.varJumpTimer > 0)
         {
@@ -149,7 +141,6 @@ public class NormalState : BaseState
             if (pe.jumpGraceTimer > 0)
             {
                 pe.Jump();
-                pe.PlayJumpDust();
             }
             else if (true)
             {

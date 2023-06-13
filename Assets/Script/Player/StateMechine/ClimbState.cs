@@ -51,6 +51,8 @@ public class ClimbState : BaseState
             return State.Normal;
         }
 
+        if (pe.CanDash && pe.input_move != new Vector2((int)pe.facing, 0))
+            return State.Dash;
 
         if (!pe.input.GamePlay.Climb.IsPressed())
             return State.Normal;
@@ -72,13 +74,13 @@ public class ClimbState : BaseState
         {
             if(pe.input_move.y==1)
             {
-                target = pe.ClimbUpSpeed;
+                target = SpdSet.ClimbUpSpeed;
             }
             else if(pe.input_move.y==-1)
             {
                 if(!pe.onGround)
                 {
-                    target = pe.ClimbDownSpeed;
+                    target = SpdSet.ClimbDownSpeed;
                     pe.PlaySlideDust();
                 }
             }

@@ -8,7 +8,7 @@ public class Tail : MonoBehaviour
     [SerializeField] private List<Color> dashColors;
     private LinkedList<Transform> tails=new LinkedList<Transform>();
     private List<Color>originColors = new List<Color>();
-    private List<SpriteRenderer> sprites = new List<SpriteRenderer>();
+    [SerializeField] private List<SpriteRenderer> sprites = new List<SpriteRenderer>();
     [SerializeField] private int colorSplit;
     [SerializeField] private float intensity;
     private void Awake()

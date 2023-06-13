@@ -1317,7 +1317,7 @@ MonoBehaviour:
   flashColor: {r: 1, g: 0.55, b: 0.55, a: 1}
   dashColors:
   - {r: 0.8773585, g: 0.72880316, b: 0.35922036, a: 0.25490198}
-  - {r: 0.3924528, g: 0.9753615, b: 0.9811321, a: 0.34901962}
+  - {r: 0.3924528, g: 0.9753615, b: 0.9811321, a: 0.2509804}
   bodyBox: {fileID: 6146213611060866543}
   normalBox: {fileID: 6146213611060866543}
   duckBox: {fileID: 8081442587607144129}
@@ -1343,19 +1343,5 @@ MonoBehaviour:
   dashCooldownTimer: -0.0010859917
   wallSlideTimer: 1.5
   dashEffectTimer: 0
+  deadTimer: 0
   input_move: {x: 0, y: 0}
-  MaxRun: 9
-  RunReduce: 50
-  RunAccel: 125
-  Gravity: 90
-  JumpSpeed: 13.125
-  JumpXBoost: 5
-  SuperWallJumpSpeed: 20
-  SuperJumpX: 26
-  WallJumpXBoost: 16.125
-  ClimbUpSpeed: 5.625
-  ClimbDownSpeed: -10
-  ClimbGrapReduce: 100
-  climbButtonTime: 0.1
-  DashSpeed: 30
-  EndDashSpeed: 20
