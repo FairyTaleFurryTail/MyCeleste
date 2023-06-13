@@ -61,12 +61,14 @@
     <Compile Include="Assets\Script\DashEffect.cs" />
     <Compile Include="Assets\Script\Tool\Singleton.cs" />
     <Compile Include="Assets\Script\Player\Entity\PlayerEntity.Collider.cs" />
+    <Compile Include="Assets\Script\CanvasManager.cs" />
     <Compile Include="Assets\Script\Player\Entity\PlayerEntity.cs" />
     <Compile Include="Assets\Script\Level.cs" />
     <Compile Include="Assets\Script\Player\Entity\PlayerEntity.Action.cs" />
     <Compile Include="Assets\Script\Player\StateMechine\DashState.cs" />
     <Compile Include="Assets\Script\MyCustom\StateCoroutine.cs" />
     <Compile Include="Assets\Script\GameManager.cs" />
+    <Compile Include="Assets\Script\Player\StateMechine\DeadState.cs" />
     <Compile Include="Assets\Script\Player\StateMechine\NormalState.cs" />
     <Compile Include="Assets\Script\Player\Entity\PlayerEntity.Const.cs" />
     <Compile Include="Assets\Script\Player\Player.cs" />
@@ -77,6 +79,7 @@
     <Compile Include="Assets\Script\Player\StateMechine\BaseState.cs" />
     <Compile Include="Assets\Script\Player\Entity\PlayerEntity.Effect.cs" />
     <Compile Include="Assets\Script\Player\Entity\PlayerEntity.Anim.cs" />
+    <Compile Include="Assets\Script\PowerPoint.cs" />
     <Compile Include="Assets\Script\Tool\IntervalTimer.cs" />
     <Compile Include="Assets\Script\Tool\Calc.cs" />
     <Compile Include="Assets\Script\MyCustom\CoroutineManager.cs" />

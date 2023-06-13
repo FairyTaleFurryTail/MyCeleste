@@ -326,9 +326,9 @@ GameObject:
   m_Component:
   - component: {fileID: 8912831471710736961}
   - component: {fileID: 6146213611060866543}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: NormalBox
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -674,10 +674,10 @@ MonoBehaviour:
   m_BlendStyleIndex: 0
   m_FalloffIntensity: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1.31
+  m_Intensity: 0.68
   m_LightVolumeIntensity: 1
   m_LightVolumeIntensityEnabled: 0
-  m_ApplyToSortingLayers: 00000000e9c5f23821341d14d50743ac
+  m_ApplyToSortingLayers: 0000000021341d14d50743ac
   m_LightCookieSprite: {fileID: 0}
   m_DeprecatedPointLightCookieSprite: {fileID: 0}
   m_LightOrder: 0
@@ -806,9 +806,9 @@ GameObject:
   m_Component:
   - component: {fileID: 2684945667519440735}
   - component: {fileID: 8081442587607144129}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: DuckBox
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1242,9 +1242,9 @@ GameObject:
   - component: {fileID: 2114818799987327095}
   - component: {fileID: 1850083215570413514}
   - component: {fileID: 4841969760785173271}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

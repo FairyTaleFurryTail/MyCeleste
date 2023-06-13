@@ -53,7 +53,6 @@ public class DashState : BaseState
         {
             if (pe.input.GamePlay.Jump.IsPressed()&& pe.jumpGraceTimer > 0)
             {
-                Debug.Log(pe.jumpGraceTimer);
                 pe.SuperJump();
                 pe.PlayJumpDust();
                 return State.Normal;

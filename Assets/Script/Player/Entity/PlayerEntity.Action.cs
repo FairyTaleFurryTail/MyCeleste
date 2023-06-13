@@ -158,4 +158,10 @@ public partial class PlayerEntity: MonoBehaviour
         forceMoveX = 0;
     }
     #endregion
+
+    private void Dead()
+    {
+        Destroy(gameObject);
+        GameManager.Instance.Respawn();
+    }
 }

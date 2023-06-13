@@ -91,12 +91,17 @@ public partial class PlayerEntity : MonoBehaviour
                     anim.SetFloat("ClimbSpeed", 0);
                 }
                 break;
+            case (int)State.Dead:
+                anim.Play("Die");
+                tailOffset = TailMove.deadOffset;
+                break;
         }
 
         if(stateMachine.state!=(int)State.Dash)
             tailOffset.x *= (float)facing*-1;
         tail.UpdateShape(tailOffset, tailSpeed);
         tail.UpdateColor(tailColorIndex);
+        if(respawnTimer>=0)tail.transform.localScale = Vector3.one * respawnTimer/ TimeSet.respawnTime;
     }
 
     private IntervalTimer flashInterval = new IntervalTimer(TimeSet.FlashInterval);

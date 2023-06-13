@@ -61,10 +61,20 @@ public partial class PlayerEntity: MonoBehaviour
         Vector2 normal = collider.GetContanctDirection();
         //存在队列里，这一帧最后统一执行，防止混乱
         if (normal.x != 0)
-            collisionXQue.Enqueue(new CollisionData(collider, normal ,speed));
-        if (normal.y!=0)
-            collisionYQue.Enqueue(new CollisionData(collider, normal , speed));
-
+            collisionXQue.Enqueue(new CollisionData(collider, normal, speed));
+        if (normal.y != 0)
+            collisionYQue.Enqueue(new CollisionData(collider, normal, speed));
+    }
+    private void OnTriggerEnter2D(Collider2D collision)
+    {
+        if (collision.gameObject.layer == LayerMask.NameToLayer("Area"))
+        {
+            if (collision.transform.CompareTag("DeadArea"))
+            {
+                //Position = GameManager.level.responPoint.transform.position;
+                stateMachine.state = (int)State.Dead;
+            }
+        }
     }
     private void OnCollisionDatas()
     {

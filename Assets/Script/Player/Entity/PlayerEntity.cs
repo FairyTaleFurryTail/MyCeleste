@@ -46,6 +46,7 @@ public partial class PlayerEntity: MonoBehaviour
     [HideInInspector] public Vector3 scale;
     [HideInInspector] public int lastDashIndex;
     [HideInInspector] public float lastDashFacing;
+    private float respawnTimer;
 
     //状态计算所需
     private bool _onGround;
@@ -65,6 +66,8 @@ public partial class PlayerEntity: MonoBehaviour
 
     private float launchTimer;
     [HideInInspector]public float dashEffectTimer;
+
+    public float deadTimer;
     #endregion
 
     [Header("输入")]
@@ -78,10 +81,12 @@ public partial class PlayerEntity: MonoBehaviour
         stateMachine.states.Add(new NormalState(this));
         stateMachine.states.Add(new ClimbState(this));
         stateMachine.states.Add(new DashState(this));
+        stateMachine.states.Add(new DeadState(this));
         rd = GetComponent<Rigidbody2D>();
         sprite=anim.GetComponent<SpriteRenderer>();
 
-        scale = Vector3.one;
+        scale = Vector3.zero;
+        respawnTimer = TimeSet.respawnTime;
         facing = Face.Right;
     }
     private void OnEnable()
@@ -120,6 +125,7 @@ public partial class PlayerEntity: MonoBehaviour
         input_move.y = input_move.y > 0 ? 1 : input_move.y < 0 ? -1 : 0;
 
         //变量计算
+        var wasOnGround=onGround;
         onGround = (!(stateMachine.state==(int)State.Dash&&speed.y>0))&&CastCheckCollider(Vector2.zero,Vector2.down);
         //onGround = CastCheckCollider(Vector2.zero, Vector2.down);
 
@@ -132,6 +138,7 @@ public partial class PlayerEntity: MonoBehaviour
         {
             jumpGraceTimer = TimeSet.JumpGraceTime;
             dashes = maxDashes;
+            if (!wasOnGround) speed.y = 0;
         }
         else
         { jumpGraceTimer.TimePassBy(); }
@@ -149,6 +156,7 @@ public partial class PlayerEntity: MonoBehaviour
             wallSlideTimer = Math.Max(wallSlideTimer - Time.deltaTime, 0);
             wallSlideDir = 0;
         }
+
         #endregion
 
         #region  var 
@@ -177,6 +185,7 @@ public partial class PlayerEntity: MonoBehaviour
 
         #endregion
 
+        if (respawnTimer.TimePassBy() <= 0)
         stateMachine.Update();
 
         OnCollisionDatas();
@@ -189,6 +198,12 @@ public partial class PlayerEntity: MonoBehaviour
         scale.x *= (int)facing;
         sprite.transform.localScale = scale*scaleMult;
         scale.x *= (int)facing;
+
+        if (stateMachine.state == (int)State.Dead)
+        {
+            if (deadTimer.TimePassBy() <= 0)
+                Dead();
+        }
     }
 
 

@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - DeadArea
   layers:
   - Default
   - TransparentFX
@@ -11,8 +12,8 @@ TagManager:
   - Solid
   - Water
   - UI
-  - 
-  - 
+  - Player
+  - Area
   - 
   - 
   - 

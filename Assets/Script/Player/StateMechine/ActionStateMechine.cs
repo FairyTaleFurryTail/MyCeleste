@@ -7,7 +7,8 @@ public enum State
 {
     Normal,
     Climb,
-    Dash
+    Dash,
+    Dead
 }
 
 public partial class ActionStateMechine

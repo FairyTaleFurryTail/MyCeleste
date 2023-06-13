@@ -23,7 +23,8 @@ public partial class PlayerEntity : MonoBehaviour
             idleOffset=new Vector2(0.05f,0.04f), runOffset=new Vector2(0.1f, 0.015f), 
             jumpUpOffset=new Vector2(0.001f, -0.1f), jumpDownOffset=new Vector2(0.001f, 0.15f), 
             duckOffset= new Vector2(0.03f, 0.07f), dashOffset=new Vector2(-0.2f, 0), 
-            climbUpOffset=new Vector2(0.01f, -0.05f), climbDownOffset=new Vector2(0.025f, 0.08f);
+            climbUpOffset=new Vector2(0.01f, -0.05f), climbDownOffset=new Vector2(0.025f, 0.08f),
+            deadOffset = new Vector2(0.001f,-0.1f);
         public static readonly float 
             idleSpeed = 0.01f, runSpeed = 0.012f,
             jumpUpSpeed = 0.015f, jumpDownSpeed = 0.015f, 
@@ -92,6 +93,8 @@ public partial class PlayerEntity : MonoBehaviour
         public const float FlashInterval = 0.05f;
 
         public const float launchTime = 1f;
+
+        public const float respawnTime = 0.5f;
     }
 
 }
