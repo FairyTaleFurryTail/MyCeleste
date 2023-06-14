@@ -49,3 +49,12 @@
 /Temp
 /Logs
 /obj
+/UserSettings
+/.vsconfig
+/Assembly-CSharp.csproj
+/Assembly-CSharp-Editor.csproj
+/Cinemachine.csproj
+/com.unity.cinemachine.editor.csproj
+/MyCeleste.sln
+/Packages
+/ProjectSettings
