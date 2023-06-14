@@ -31,6 +31,11 @@ public class Tail : MonoBehaviour
     private float scale=1;
     public void UpdateShape(Vector2 tailOffset, float speed)
     {
+#if DEBUG
+        Debug.Log(speed);
+#else
+        speed*=4;
+#endif
         //测试的数据：0.04对应1.3      0.015以下对应1
         float targetScale = 1 + Mathf.Lerp(0, 0.3f, (tailOffset.SqrMagnitude()-0.015f)/ 0.025f);
         scale = Mathf.MoveTowards(scale, targetScale, growUpSpeed);
